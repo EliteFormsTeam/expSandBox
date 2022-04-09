@@ -24,17 +24,6 @@ export class Test extends LitElement {
         ></elite-form>
         <button @click=${() => this.ourFunc(this.handleSubmit)} type='submit'>submit</button>
       </div>
-
-
-
-      <div id="main">
-      <name- id="fname" required="true" placeholder="first name"></name->
-      <name- id="lname" required="true" placeholder="last name"></name->
-      <!-- <input id="custom" type="text"> -->
-      <!-- <email- required="true"></email->
-      <password- required="true"></password-> -->
-      <button @click=${() => this.checkandget(["fname", "lname"], this.handleSubmit)}>Check</button>
-    </div>
     `;
   }
 
