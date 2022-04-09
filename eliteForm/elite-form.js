@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import './elite-form-rules'
+import internalValMethods from './elite-form-rules'
 
 export class EliteForm extends LitElement {
 
@@ -7,32 +7,37 @@ export class EliteForm extends LitElement {
     type: {},
     label: {},
     placeholder: {},
-    fieldId: {},
-    validationRules: {},
+    id: {},
+    name: {},
+    validationRules: {}, // this isthe prop that the dev passes in
     errors: {},
     errorBehavior: {}, 
     styles: {}, 
   }
 
+  static state = {
+    internalValMethods: internalValMethods  // we import this from elite-forms-rules
+  }
+
   constructor() {
     super();
+    this.value = '';
     this.type = '',
     this.label = '',
     this.placeholder = '',
-    this.fieldId = '',
-    this.validationRules = {}, 
+    this.id = '',
     this.errors = '',
-    this.errorBehavior = {},
     this.styles = {}
   }
 
   render() {
     return html`
       <div>
-        <input >
+        <input @blur=${() => {internalValMethods.email('patrick@mojica.com')}}>
       </div>
     `;
   }
+  
 }
 
 window.customElements.define('elite-form', EliteForm)

@@ -14,27 +14,18 @@ export class Test extends LitElement {
           type='email' 
           label='Email:'
           placeholder='email'
-          fieldId='email',
+          id='email'
           validationRules: {
             required: true,
             email: true, 
-            min: 10, 
-            max: 20
           },
         ></elite-form>
-        <button @click=${() => this.ourFunc(this.handleSubmit)} type='submit'>submit</button>
+        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
       </div>
 
 
 
-      <div id="main">
-      <name- id="fname" required="true" placeholder="first name"></name->
-      <name- id="lname" required="true" placeholder="last name"></name->
-      <!-- <input id="custom" type="text"> -->
-      <!-- <email- required="true"></email->
-      <password- required="true"></password-> -->
-      <button @click=${() => this.checkandget(["fname", "lname"], this.handleSubmit)}>Check</button>
-    </div>
+      
     `;
   }
 
@@ -61,3 +52,5 @@ export class Test extends LitElement {
   }
 
 }
+
+window.customElements.define('test-', Test);
