@@ -33,9 +33,16 @@ export class EliteForm extends LitElement {
   render() {
     return html`
       <div>
-        <input @blur=${() => {internalValMethods.email('patrick@mojica.com')}}>
+        <input @input=${this.handleSubmitTemp} @blur=${() => {internalValMethods.email('patrick@mojica.com')}}>
       </div>
     `;
+  }
+
+  handleSubmitTemp(event) {
+    const { value } = event.target;
+    this.value = value
+    console.log(this.value)
+    this.requestUpdate()
   }
   
 }
