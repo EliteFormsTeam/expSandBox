@@ -10,20 +10,21 @@ export class EliteForm extends LitElement {
     fieldId: {},
     validationRules: {},
     errors: {},
-    errorBehavior: {}, 
-    styles: {}, 
+    errorBehavior: {},
+    styles: {},
   }
 
   constructor() {
     super();
-    this.type = '',
-    this.label = '',
-    this.placeholder = '',
-    this.fieldId = '',
-    this.validationRules = {}, 
-    this.errors = '',
-    this.errorBehavior = {},
-    this.styles = {}
+    this.type = '';
+    this.label = '';
+    this.placeholder = '';
+    this.fieldId = '';
+    this.value = '';
+    this.validationRules = {};
+    this.errors = '';
+    this.errorBehavior = {};
+    this.styles = {};
   }
 
   render() {
