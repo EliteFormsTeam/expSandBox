@@ -10,11 +10,11 @@ export class EliteForm extends LitElement {
     placeholder: {},
     note: {},
     name: {},
-    // value: {},
     validationRules: {}, // this is the prop that the dev passes in
     errors: {},
     errorBehavior: {}, 
     styles: {}, 
+    validationName: {},
   }
 
   static state = {
@@ -36,26 +36,51 @@ export class EliteForm extends LitElement {
 
   // line 45, type should be modified to takes the attribute dynamically
   render() {
+
+    const error = []
+    for (let err in this.error) {
+      error.push(html`<div>${this.error[err]}</div>`)
+    }
+
     return html`
       <div>
         <label for=${this.id}>${this.label && this.label}</label>
         <input 
           id=${this.id} 
-          type="text" 
+          type=${this.type}
           @input=${this.handleInput} 
+          @blur=${this.handleInput}
           placeholder=${this.placeholder} 
         }>
-        <p>${this.note && this.note}</p>
-        <div ?hidden=${!this.error} >${this.error}</div>
+        <div ?hidden=${!this.note}>${this.note}</div><br>
+        <div ?hidden=${!this.help}>${this.help}</div><br>
+        ${error}
       </div>
     `;
   }
 
-  handleInput(event) {
+  handleSubmitTemp(event) { //*****not being used
     const { value } = event.target;
     this.value = value;
     // console.log(this.value);
     this.requestUpdate();
+  }
+
+  handleInput(event) {
+    const { value } = event.target;
+    this.value = value
+    this.handleValidation()
+  }
+
+  handleValidation() {
+    const error = {}
+    for (let rule in this.validationRules) { 
+      const result = internalValMethods[rule](this, this.validationRules[rule])
+      if (result.error) error[rule] = result.message
+    }
+    this.error = error
+    console.log(this.error)
+    this.requestUpdate()
   }
   
 }

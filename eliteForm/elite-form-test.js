@@ -9,29 +9,46 @@ export class Test extends LitElement {
   render() {
 
     return html`
-      <div id="main">
+      <div id='main'>
         <elite-form 
-          id='email'
-          type='email' 
+          type='text'
+          label='User Name:' 
+          name='username'
+          placeholder='username'
+          id='username'
+          .validationRules= ${{
+            required: true,
+            alphanumeric: true,
+            between: [3, 7]
+          }}
+        ></elite-form>
+        <elite-form
+          type='email'
           label='Email:'
+          name='email'
           placeholder='email'
-          note='note for email'
-          validationRules: {
+          id='email'
+          .validationRules= ${{
             required: true,
-            email: true, 
-          },
+            email: true,
+            endsWith: ['yahoo.com', 'bing.com']
+          }}
+          validationName='yahoo email'
+          note='**note** please enter valid yahoo email'
         ></elite-form>
-        <elite-form 
-          id='name'
-          type='text' 
-          label='Name:'
-          placeholder='name'
-          note='note for name'
-          validationRules: {
+        <elite-form
+          type='password'
+          label='Password:'
+          name='password'
+          placeholder='password'
+          id='password'
+          .validationRules= ${{
             required: true,
-          },
+            alphanumeric: true,
+          }}
+          validationName='a strong password'
         ></elite-form>
-        <button @click=${() => this.checkandget(["email", "name"], this.handleSubmit)} type='submit'>submit</button>
+        <button @click=${() => this.checkandget(['username', 'email', 'password'], this.handleSubmit)} type='submit'>submit</button>
       </div>
 
       
