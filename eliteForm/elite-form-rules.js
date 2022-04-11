@@ -11,14 +11,17 @@ const internalValMethods = {
       message: error ? `Please enter a valid ${name} address.` : null,
       error: error
     }
-    return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+    return err // ***** switched this to return the object in order to collate all the errors
   },
 
   //NOTE***developer needs to use escape variable when writing their custom strings***
   endsWith: function(node, devInput) { // node = the 'this' keyword. we need access to state, devInput = array of strings, represents list of strings that are allowed endings 
+    console.log(devInput.values)
     let error = true
     for (let i = 0; i < devInput.length; i++) {
+      console.log('we entered')
       const validEnding = RegExp(String.raw`.*${devInput[i]}$`)
+      console.log('howdy', validEnding)
       if (validEnding.test(node.value)) {
         error = false
         i = devInput.length
@@ -28,7 +31,7 @@ const internalValMethods = {
       message: error ? 'This field doesn\'t end with a valid value.' : null,
       error: error
     }
-    return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+    return err // ***** switched this to return the object in order to collate all the errors
   },
 
   matches: function(node, devInput) { // node = the 'this' keyword. we need access to state, devInput = array of strings, represents list of strings that are allowed endings 
@@ -52,7 +55,7 @@ const internalValMethods = {
       message: error ? `${node.value} is not an allowed value.` : null,
       error: error
     }
-    return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+    return err // ***** switched this to return the object in order to collate all the errors
   },
 
   not: function(node, devInput) { // node = the 'this' keyword. we need access to state, devInput = array of strings, represents list of strings that are allowed endings 
@@ -77,7 +80,7 @@ const internalValMethods = {
       message: error ? `${node.value} is not an allowed ${name}.` : null,
       error: error
     }
-    return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+    return err // ***** switched this to return the object in order to collate all the errors
   },
 
   required: function(node) { // node = the 'this' keyword. we need access to state
@@ -86,23 +89,40 @@ const internalValMethods = {
       message: !node.value ? `${name} is required.` : null,
       error: !node.value ? true : false
     }
-    return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+    return err // ***** switched this to return the object in order to collate all the errors
   },
-  
-  alphanumeric: function(val) {
+
+  alphanumeric: function(node) {
     const alphanumericRegex = /[^a-zA-Z0-9]+/g
-    console.log(!alphanumericRegex.test(val));
-    return !alphanumericRegex.test(val);
+    const name = node.validationName || node.name || node.type
+    const error = alphanumericRegex.test(node.value)
+    console.log(node.value)
+    const err = {
+      message: error ? `${name} can only contain letters and numbers` : null,
+      error: error
+    }
+    // console.log(err)
+    return err
   },
-  alpha: function(val) {
-    const alphaRegex = /[^a-zA-Z]+/g;
-    console.log(!alphaRegex.test(val));
-    return !alphaRegex.test(val);
+  alpha: function(node) {
+    const name = node.validationName || node.name || node.type
+    const alphaRegex = /[^a-zA-Z]+/g
+    const error = alphaRegex.test(node.value)
+    const err = {
+      message: error ? `${name} can only contain alphabetical characters` : null,
+      error: error
+    }
+    return err
   },
-  number: function(val) {
-    const numberRegex = /[^0-9]+/g;
-    console.log(!numberRegex.test(val));
-    return !numberRegex.test(val);
+  number: function(node) {
+    const name = node.validationName || node.name || node.type
+    const numberRegex = /[^0-9]+/g
+    const error = numberRegex.test(node.value)
+    const err = {
+      message: error ? `${name} must be a number` : null,
+      error: error
+    }
+    return err
   }
 }
 
