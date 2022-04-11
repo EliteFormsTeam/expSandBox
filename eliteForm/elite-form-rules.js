@@ -135,7 +135,45 @@ const internalValMethods = {
       error: error
     }
     return err
-  }
+  },
+  min: function(node, devInput) {
+    let error = true;
+    const name = node.validationName || node.name || node.type
+    if (node.value.length >= devInput){
+      error = false;
+    }
+    const err = {
+      message: error ? `${name} must be at least ${devInput} characters long` : null,
+      error: error
+    }
+    return err;
+  },
+  max: function(node, devInput) {
+    let error = false;
+    const name = node.validationName || node.name || node.type;
+    if (node.value.length > devInput){
+      error = true;
+    }
+    const err = {
+      message: error ? `The maximun number of characters of ${name} is ${devInput} characters long` : null,
+      error: error
+    }
+    return err;
+  },
+  between: function(node, devInput) { // devInput is an array of [min, max]
+    let error = true;
+    const name = node.validationName || node.name || node.type;
+    if (node.value.length >= devInput[0] && node.value.length <= devInput[1]) {
+      error = false;
+    }
+    const err = {
+      message: error ? `${name} must be in between ${devInput[0]} and ${devInput[1]} characters long` : null,
+      error: error
+    }
+    return err;
+  },
+
+
 }
 
 export default internalValMethods;
