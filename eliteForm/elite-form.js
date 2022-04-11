@@ -1,10 +1,24 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css} from 'lit';
+import {styleMap} from 'lit/directives/style-map.js';
 import internalValMethods from './elite-form-rules'
 
+
 export class EliteForm extends LitElement {
+  static get styles() {
+    return css`
+      .elite-form{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* align-items: center; */
+        padding: 10px;
+      }
+    `
+  }
 
   static properties = {
     id: {},
+    class: {},
     type: {},
     label: {},
     placeholder: {},
@@ -24,6 +38,7 @@ export class EliteForm extends LitElement {
   constructor() {
     super();
     this.id = '';
+    this.class = '';
     this.type = '';
     this.label = '';
     this.placeholder = '';
@@ -34,16 +49,15 @@ export class EliteForm extends LitElement {
     this.styles = {}
   }
 
-  // line 45, type should be modified to takes the attribute dynamically
   render() {
 
     const error = []
     for (let err in this.error) {
-      error.push(html`<div>${this.error[err]}</div>`)
+      error.push(html`<li>${this.error[err]}</li>`)
     }
 
     return html`
-      <div>
+      <div class='elite-form, ${this.class}'>
         <label for=${this.id}>${this.label && this.label}</label>
         <input 
           id=${this.id} 
@@ -52,9 +66,10 @@ export class EliteForm extends LitElement {
           @blur=${this.handleInput}
           placeholder=${this.placeholder} 
         }>
-        <div ?hidden=${!this.note}>${this.note}</div><br>
-        <div ?hidden=${!this.help}>${this.help}</div><br>
-        ${error}
+        <div class="note" ?hidden=${!this.note} style=${styleMap(this.styles)}>${this.note}</div>
+        <ul class="error">
+          ${error} 
+        </ul>
       </div>
     `;
   }
@@ -74,7 +89,7 @@ export class EliteForm extends LitElement {
 
   handleValidation() {
     const error = {}
-    for (let rule in this.validationRules) { 
+    for (let rule in this.validationRules) {
       const result = internalValMethods[rule](this, this.validationRules[rule])
       if (result.error) error[rule] = result.message
     }
