@@ -1,5 +1,6 @@
 import {LitElement, html} from 'lit';
 import internalValMethods from './elite-form-rules'
+import dbValidation from './db-validation'
 
 export class EliteForm extends LitElement {
 
@@ -18,7 +19,9 @@ export class EliteForm extends LitElement {
   }
 
   static state = {
-    internalValMethods: internalValMethods  // we import this from elite-forms-rules
+    internalValMethods: internalValMethods, 
+    dbValidation: dbValidation,  
+    // we import this from elite-forms-rules
   }
 
   constructor() {
@@ -64,6 +67,12 @@ export class EliteForm extends LitElement {
     this.value = value;
     // console.log(this.value);
     this.requestUpdate();
+    if (this.id === 'email') {
+      dbValidation.existingEmail(this, this.url)
+    }
+    else if (this.id === 'username') {
+      dbValidation.existingUsername(this, this.url)
+    }
   }
 
   handleInput(event) {
