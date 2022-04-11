@@ -87,6 +87,22 @@ const internalValMethods = {
       error: !node.value ? true : false
     }
     return err.error // for consistency, im returning the boolean, but we should return the error message also. do so by switching return statement to just err instead of err.error
+  },
+  
+  alphanumeric: function(val) {
+    const alphanumericRegex = /[^a-zA-Z0-9]+/g
+    console.log(!alphanumericRegex.test(val));
+    return !alphanumericRegex.test(val);
+  },
+  alpha: function(val) {
+    const alphaRegex = /[^a-zA-Z]+/g;
+    console.log(!alphaRegex.test(val));
+    return !alphaRegex.test(val);
+  },
+  number: function(val) {
+    const numberRegex = /[^0-9]+/g;
+    console.log(!numberRegex.test(val));
+    return !numberRegex.test(val);
   }
 }
 
