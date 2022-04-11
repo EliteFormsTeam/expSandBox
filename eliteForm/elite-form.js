@@ -4,16 +4,16 @@ import internalValMethods from './elite-form-rules'
 export class EliteForm extends LitElement {
 
   static properties = {
+    id: {},
     type: {},
     label: {},
     placeholder: {},
-    id: {},
+    note: {},
     name: {},
-    validationRules: {}, // this isthe prop that the dev passes in
+    validationRules: {}, // this is the prop that the dev passes in
     errors: {},
     errorBehavior: {}, 
     styles: {}, 
-    help: {},
     validationName: {},
   }
 
@@ -23,15 +23,18 @@ export class EliteForm extends LitElement {
 
   constructor() {
     super();
-    this.value = '';
-    this.type = '',
-    this.label = '',
-    this.placeholder = '',
-    this.id = '',
-    this.errors = '',
+    this.id = '';
+    this.type = '';
+    this.label = '';
+    this.placeholder = '';
+    this.note = '';
+    this.name = '';
+    this.errors = '';
+    this.errorBehavior = '';
     this.styles = {}
   }
 
+  // line 45, type should be modified to takes the attribute dynamically
   render() {
 
     const error = []
@@ -41,8 +44,15 @@ export class EliteForm extends LitElement {
 
     return html`
       <div>
-        <div ?hidden=${!this.label}>${this.label}</div><br>
-        <input type=${''} @input=${this.handleInput} @blur=${this.handleInput} placeholder=${this.placeholder}><br>
+        <label for=${this.id}>${this.label && this.label}</label>
+        <input 
+          id=${this.id} 
+          type=${this.type}
+          @input=${this.handleInput} 
+          @blur=${this.handleInput}
+          placeholder=${this.placeholder} 
+        }>
+        <div ?hidden=${!this.note}>${this.note}</div><br>
         <div ?hidden=${!this.help}>${this.help}</div><br>
         ${error}
       </div>
@@ -51,9 +61,9 @@ export class EliteForm extends LitElement {
 
   handleSubmitTemp(event) { //*****not being used
     const { value } = event.target;
-    this.value = value
-    console.log(this.value)
-    this.requestUpdate()
+    this.value = value;
+    // console.log(this.value);
+    this.requestUpdate();
   }
 
   handleInput(event) {
@@ -64,7 +74,7 @@ export class EliteForm extends LitElement {
 
   handleValidation() {
     const error = {}
-    for (let rule in this.validationRules) {
+    for (let rule in this.validationRules) { 
       const result = internalValMethods[rule](this, this.validationRules[rule])
       if (result.error) error[rule] = result.message
     }

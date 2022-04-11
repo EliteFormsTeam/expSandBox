@@ -11,13 +11,15 @@ export class Test extends LitElement {
     return html`
       <div id='main'>
         <elite-form 
-          type='text' 
+          type='text'
+          label='User Name:' 
           name='username'
           placeholder='username'
           id='username'
           .validationRules= ${{
             required: true,
-            alphanumeric: true
+            alphanumeric: true,
+            between: [3, 7]
           }}
         ></elite-form>
         <elite-form
@@ -32,7 +34,7 @@ export class Test extends LitElement {
             endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'
-          help='**(help)** please enter valid yahoo email'
+          note='**note** please enter valid yahoo email'
         ></elite-form>
         <elite-form
           type='password'
@@ -49,16 +51,14 @@ export class Test extends LitElement {
         <button @click=${() => this.checkandget(['username', 'email', 'password'], this.handleSubmit)} type='submit'>submit</button>
       </div>
 
-
-
       
     `;
   }
 
   checkandget(arr, callback) { // pass the array of ids of fields as the first argument
     const fields = this.shadowRoot.children.main.children;
-    console.log(fields)
-    // console.log(fields[0].val);
+    // console.log(fields)
+    // console.log(fields[0].value);
     let formElementsCheck = true;
 
     const cache = {};
