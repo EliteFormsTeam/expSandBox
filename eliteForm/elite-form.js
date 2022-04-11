@@ -13,6 +13,8 @@ export class EliteForm extends LitElement {
     errors: {},
     errorBehavior: {}, 
     styles: {}, 
+    help: {},
+    validationName: {},
   }
 
   static state = {
@@ -31,17 +33,43 @@ export class EliteForm extends LitElement {
   }
 
   render() {
+
+    const error = []
+    for (let err in this.error) {
+      error.push(html`<div>${this.error[err]}</div>`)
+    }
+
     return html`
       <div>
-        <input @input=${this.handleSubmitTemp} @blur=${() => {internalValMethods.number(this.value)}}>
+        <div ?hidden=${!this.label}>${this.label}</div><br>
+        <input type=${''} @input=${this.handleInput} @blur=${this.handleInput} placeholder=${this.placeholder}><br>
+        <div ?hidden=${!this.help}>${this.help}</div><br>
+        ${error}
       </div>
     `;
   }
 
-  handleSubmitTemp(event) {
+  handleSubmitTemp(event) { //*****not being used
     const { value } = event.target;
     this.value = value
     console.log(this.value)
+    this.requestUpdate()
+  }
+
+  handleInput(event) {
+    const { value } = event.target;
+    this.value = value
+    this.handleValidation()
+  }
+
+  handleValidation() {
+    const error = {}
+    for (let rule in this.validationRules) {
+      const result = internalValMethods[rule](this, this.validationRules[rule])
+      if (result.error) error[rule] = result.message
+    }
+    this.error = error
+    console.log(this.error)
     this.requestUpdate()
   }
   

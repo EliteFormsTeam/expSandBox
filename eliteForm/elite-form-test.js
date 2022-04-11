@@ -9,18 +9,44 @@ export class Test extends LitElement {
   render() {
 
     return html`
-      <div>
+      <div id='main'>
         <elite-form 
-          type='email' 
+          type='text' 
+          name='username'
+          placeholder='username'
+          id='username'
+          .validationRules= ${{
+            required: true,
+            alphanumeric: true
+          }}
+        ></elite-form>
+        <elite-form
+          type='email'
           label='Email:'
+          name='email'
           placeholder='email'
           id='email'
-          validationRules: {
+          .validationRules= ${{
             required: true,
-            email: true, 
-          },
+            email: true,
+            endsWith: ['yahoo.com', 'bing.com']
+          }}
+          validationName='yahoo email'
+          help='**(help)** please enter valid yahoo email'
         ></elite-form>
-        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
+        <elite-form
+          type='password'
+          label='Password:'
+          name='password'
+          placeholder='password'
+          id='password'
+          .validationRules= ${{
+            required: true,
+            alphanumeric: true,
+          }}
+          validationName='a strong password'
+        ></elite-form>
+        <button @click=${() => this.checkandget(['username', 'email', 'password'], this.handleSubmit)} type='submit'>submit</button>
       </div>
 
 
@@ -38,8 +64,8 @@ export class Test extends LitElement {
     const cache = {};
 
     for (let i = 0; i < arr.length; i++){
-      const { val, id } = fields[arr[i]];
-      cache[id] = val;
+      const { value, id } = fields[arr[i]];
+      cache[id] = value;
     }
 
     if (formElementsCheck){
