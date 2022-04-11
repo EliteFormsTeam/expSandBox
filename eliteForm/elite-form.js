@@ -52,7 +52,7 @@ export class EliteForm extends LitElement {
           id=${this.id} 
           type=${this.type}
           @input=${this.handleInput} 
-          @blur=${this.handleInput}
+          @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
         }>
         <div ?hidden=${!this.note}>${this.note}</div><br>
