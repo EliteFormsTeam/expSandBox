@@ -24,7 +24,7 @@ export class EliteForm extends LitElement {
   constructor() {
     super();
     this.value = '';
-    this.type = '',
+    this.type = 'text',
     this.label = '',
     this.placeholder = '',
     this.id = '',
@@ -42,7 +42,7 @@ export class EliteForm extends LitElement {
     return html`
       <div>
         <div ?hidden=${!this.label}>${this.label}</div><br>
-        <input type=${''} @input=${this.handleInput} @blur=${this.handleInput} placeholder=${this.placeholder}><br>
+        <input type=${this.type} @input=${this.handleInput} @blur=${this.handleInput} placeholder=${this.placeholder}><br>
         <div ?hidden=${!this.help}>${this.help}</div><br>
         ${error}
       </div>

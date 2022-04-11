@@ -42,7 +42,7 @@ export class Test extends LitElement {
           id='password'
           .validationRules= ${{
             required: true,
-            alphanumeric: true,
+            password: true,
           }}
           validationName='a strong password'
         ></elite-form>

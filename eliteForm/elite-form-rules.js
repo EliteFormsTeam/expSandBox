@@ -123,6 +123,18 @@ const internalValMethods = {
       error: error
     }
     return err
+  },
+  password: function(node) {
+    console.log('in password')
+    console.log(node.value)
+    const name = node.validationName || node.name || node.type
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    const error = !passwordRegex.test(node.value)
+    const err = {
+      message: error ? `${name} must be 8 characters long and contain at least: 1 number,\n1 uppercase character,\n1 lowercase character,\n1 special character (!,@,#,$,%,^,&,*)` : null,
+      error: error
+    }
+    return err
   }
 }
 
