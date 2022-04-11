@@ -4,12 +4,14 @@ import internalValMethods from './elite-form-rules'
 export class EliteForm extends LitElement {
 
   static properties = {
+    id: {},
     type: {},
     label: {},
     placeholder: {},
-    id: {},
+    note: {},
     name: {},
-    validationRules: {}, // this isthe prop that the dev passes in
+    // value: {},
+    validationRules: {}, // this is the prop that the dev passes in
     errors: {},
     errorBehavior: {}, 
     styles: {}, 
@@ -21,28 +23,39 @@ export class EliteForm extends LitElement {
 
   constructor() {
     super();
-    this.value = '';
-    this.type = '',
-    this.label = '',
-    this.placeholder = '',
-    this.id = '',
-    this.errors = '',
+    this.id = '';
+    this.type = '';
+    this.label = '';
+    this.placeholder = '';
+    this.note = '';
+    this.name = '';
+    this.errors = '';
+    this.errorBehavior = '';
     this.styles = {}
   }
 
+  // line 45, type should be modified to takes the attribute dynamically
   render() {
     return html`
       <div>
-        <input @input=${this.handleSubmitTemp} @blur=${() => {internalValMethods.number(this.value)}}>
+        <label for=${this.id}>${this.label && this.label}</label>
+        <input 
+          id=${this.id} 
+          type="text" 
+          @input=${this.handleInput} 
+          placeholder=${this.placeholder} 
+        }>
+        <p>${this.note && this.note}</p>
+        <div ?hidden=${!this.error} >${this.error}</div>
       </div>
     `;
   }
 
-  handleSubmitTemp(event) {
+  handleInput(event) {
     const { value } = event.target;
-    this.value = value
-    console.log(this.value)
-    this.requestUpdate()
+    this.value = value;
+    // console.log(this.value);
+    this.requestUpdate();
   }
   
 }

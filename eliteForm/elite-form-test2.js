@@ -1,16 +1,30 @@
 import {LitElement, html} from 'lit';
-import './elite-form'
+import './elite-form';
 import '../LitElements/name.js';
 import '../LitElements/email.js';
 import '../LitElements/password';
+import './elite-form2';
 
-export class Test extends LitElement {
+
+export class Test2 extends LitElement {
 
   render() {
 
     return html`
       <div id="main">
-        <elite-form 
+        <elite-form2
+          id='test' 
+          type='text' 
+          label='Test Input:'
+          placeholder='type whatever'
+          note='type between 5 and 10 letters'
+          validationRules: {
+            required: true,
+            min: 5, 
+            max: 10
+          },
+        ></elite-form2>
+        <elite-form2 
           id='email'
           type='email' 
           label='Email:'
@@ -20,28 +34,18 @@ export class Test extends LitElement {
             required: true,
             email: true, 
           },
-        ></elite-form>
-        <elite-form 
-          id='name'
-          type='text' 
-          label='Name:'
-          placeholder='name'
-          note='note for name'
-          validationRules: {
-            required: true,
-          },
-        ></elite-form>
-        <button @click=${() => this.checkandget(["email", "name"], this.handleSubmit)} type='submit'>submit</button>
+        ></elite-form2>
+        <button @click=${() => this.checkandget(["test", "email"], this.handleSubmit)}>Check</button>
       </div>
-
-      
-    `;
+      `;
   }
+
+
 
   checkandget(arr, callback) { // pass the array of ids of fields as the first argument
     const fields = this.shadowRoot.children.main.children;
     // console.log(fields)
-    // console.log(fields[0].value);
+    // console.log(fields[0]);
     let formElementsCheck = true;
 
     const cache = {};
@@ -62,4 +66,4 @@ export class Test extends LitElement {
 
 }
 
-window.customElements.define('test-', Test);
+window.customElements.define('form-test2', Test2);
