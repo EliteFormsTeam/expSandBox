@@ -100,6 +100,7 @@ const internalValMethods = {
     // console.log(err)
     return err
   },
+
   alpha: function(node) {
     const name = node.validationName || node.name || node.type
     const alphaRegex = /[^a-zA-Z]+/g
@@ -110,6 +111,7 @@ const internalValMethods = {
     }
     return err
   },
+
   number: function(node) {
     const name = node.validationName || node.name || node.type
     const numberRegex = /[^0-9]+/g
@@ -130,6 +132,7 @@ const internalValMethods = {
     }
     return err
   },
+
   min: function(node, devInput) {
     let error = true;
     const name = node.validationName || node.name || node.type
@@ -142,6 +145,7 @@ const internalValMethods = {
     }
     return err;
   },
+
   max: function(node, devInput) {
     let error = false;
     const name = node.validationName || node.name || node.type;
@@ -154,6 +158,7 @@ const internalValMethods = {
     }
     return err;
   },
+
   between: function(node, devInput) { // devInput is an array of [min, max]
     let error = true;
     const name = node.validationName || node.name || node.type;
@@ -166,6 +171,7 @@ const internalValMethods = {
     }
     return err;
   },
+  
   checkExisting: async function(node, devInput) {  
     let error = false
     console.log('validation node value: ', node.value)
@@ -188,7 +194,10 @@ const internalValMethods = {
       console.log(err)
       return err
     }
-    return
+    return {
+      message: null, 
+      error: false
+    }
   }, 
 }
 
