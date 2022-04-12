@@ -4,6 +4,7 @@ import internalValMethods from './elite-form-rules'
 import dbValidation from './db-validation'
 
 
+
 export class EliteForm extends LitElement {
   static get styles() {
     return css`
@@ -12,6 +13,7 @@ export class EliteForm extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         padding: 10px;
+        font-family: 'Roboto Slab', serif;
        }`
   }
 
@@ -40,13 +42,12 @@ export class EliteForm extends LitElement {
     errors: {},
     errorBehavior: {}, 
     validationName: {},
-    // styles: {},
+    // labelStyles: {},
   }
 
   static state = {
     internalValMethods: internalValMethods, 
-    dbValidation: dbValidation,  
-    // we import this from elite-forms-rules
+    dbValidation: dbValidation,  // we import this from elite-forms-rules
   }
 
   constructor() {
@@ -61,22 +62,27 @@ export class EliteForm extends LitElement {
     this.name = '';
     this.errors = '';
     this.errorBehavior = ''; 
-    this.lablestyles = '';
+    this.styles = ''; // styles for the most outer div
+    this.labelStyles = '';  
+    this.inputStyles = ''; 
+    this.noteStyles = ''; 
+    this.errorStyles = '';
   }
 
-  render() {
+  // style=${styleMap(this.styles)}
 
+  render() {
     const error = []
     for (let err in this.error) {
       error.push(html`<li>${this.error[err]}</li>`)
     }
 
     return html`
-      <div class='elite-form'>
+      <div class='elite-form' style=${styleMap(this.styles)}>
         <label 
           for=${this.id}
-          style=${styleMap(this.styles)}>
-          ${this.label && this.label}
+          style=${styleMap(this.labelStyles)}>
+            ${this.label && this.label}
         </label>
         <input 
           id=${this.id} 
@@ -84,13 +90,17 @@ export class EliteForm extends LitElement {
           @input=${this.handleInput} 
           @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
+          style=${styleMap(this.inputStyles)}
         }>
-        <div class="note" 
+        <div 
+          class="note" 
           ?hidden=${!this.note} 
-          style=${styleMap(this.styles)}>
+          style=${styleMap(this.noteStyles)}>
             ${this.note}
         </div>
-        <ul class="error">
+        <ul 
+          class="error" 
+          style=${styleMap(this.errorStyles)}>
           ${error} 
         </ul>
       </div>

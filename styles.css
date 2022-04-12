@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;900&display=swap');
+
 #container{
   display: flex;
   flex-direction: column;
@@ -5,3 +7,4 @@
   justify-content: space-evenly;
   padding: 50px;
 }
+

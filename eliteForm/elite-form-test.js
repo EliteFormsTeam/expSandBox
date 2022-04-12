@@ -16,7 +16,7 @@ export class Test extends LitElement {
 
   render() {
 
-    const labelStyles= {border: '1px solid red', 'background-color': 'gray'};
+    const labelStyles= {border: '1px solid orange', 'background-color': 'lightgray'};
 
     return html`
       <div id='main'>
@@ -29,12 +29,10 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             alphanumeric: true,
-<<<<<<< HEAD
-=======
             between: [3, 7]
->>>>>>> main
           }}
-          .labelstyles= ${labelStyles}
+          .labelStyles= ${labelStyles}
+          .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
         ></elite-form>
         <elite-form
           type='email'
@@ -49,6 +47,7 @@ export class Test extends LitElement {
           }}
           validationName='yahoo email'
           note='**note** please enter valid yahoo email'
+          .noteStyles= ${{color: 'purple'}}
         ></elite-form>
         <div> howdy </div>
         <elite-form
