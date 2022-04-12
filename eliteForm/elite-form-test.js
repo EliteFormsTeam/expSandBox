@@ -103,14 +103,6 @@ export class Test extends LitElement {
 
   `;
 
-
-  submitForm() {
-    validateForm(this, this.handleSubmit)
-  }
-
-  // @click=${() => checkAndGet(this.handleSubmit)}
-
-
   render() {
     /* overriding stylings starts */
     const styles = {
@@ -167,7 +159,6 @@ export class Test extends LitElement {
               } 
             })
           }}
-          .styles=${styles}
           .labelStyles= ${labelStyles}
           .inputStyles= ${inputStyles}
           .errorStyles= ${errorStyles}
@@ -228,7 +219,7 @@ export class Test extends LitElement {
 
         <button 
           class='btn block-cube block-cube-hover' 
-          @click=${this.submitForm} 
+          @click=${() => validateForm(this, this.handleSubmit)}
           type='submit'>
           <div class='bg-top'>
             <div class='bg-inner'></div>
