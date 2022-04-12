@@ -4,7 +4,7 @@ const PORT = 3000;
 import dbController from './dbController.js'
 import cors from 'cors'
 
-app.use(cors({origin: 'http://localhost:8002',credentials: true,}));
+app.use(cors({origin: 'http://localhost:8000',credentials: true,}));
 app.use(express.json());
 
 app.post('/signup/checkusername', dbController.checkForUsername, (req, res) => {

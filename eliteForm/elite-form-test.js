@@ -27,9 +27,9 @@ export class Test extends LitElement {
           placeholder='username'
           id='username'
           .validationRules= ${{
-            required: true,
+            // required: true,
             alphanumeric: true,
-            between: [3, 7],
+            between: [2,7],
             checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -91,7 +91,7 @@ export class Test extends LitElement {
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
         <div> hello </div> -->
-        <button @click=${() => this.xcheckandget(this.handleSubmit)} type='submit'>submit</button>
+        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
       </div>
     `;
   }
@@ -104,7 +104,6 @@ export class Test extends LitElement {
   subset of the input fields*/
   checkandget(callback, arr) {
     const fields = this.shadowRoot.children.main.children
-    console.log(fields)
     let fieldsCheck = true
     const cache = {}
 
@@ -121,8 +120,10 @@ export class Test extends LitElement {
             cache[id] = value
           }
         } else if (currentElement.eliteForm) {
+          if (!currentElement.value) {
+            currentElement.handleValidation()
+          }
           cache[currentElement.id] = currentElement.value
-          currentElement.handleValidation()
           if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
         } else {
           const { id, value } = fields[singleElement]
@@ -130,7 +131,10 @@ export class Test extends LitElement {
         }
       }
     }
+    // console.log('fieldsCheck', fieldsCheck)
     if (fieldsCheck) {
+      // console.log(cache)
+      // console.log(callback)
       callback(cache)
     } else {
       console.log('bad form')
@@ -138,7 +142,7 @@ export class Test extends LitElement {
   }
 
   handleSubmit(arg) {
-    console.log(arg);
+    console.log('arg', arg);
   }
 
 }
