@@ -1,11 +1,24 @@
 const dbValidation = {
-  checkExisting(node, URL) {
-    const body = {}
-    body[node.id] = node.value
+  checkExistingUsername(username, URL) {   
     fetch(URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({username: username})
+
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data === true) {
+        alert ('username unavailable')
+      }
+    })
+  }, 
+
+  checkExistingEmail(email, URL) {    
+    fetch(URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({email: email})
 
     })
     .then(res => res.json())
@@ -15,6 +28,7 @@ const dbValidation = {
       }
     })
   }  
+
 }
 
 export default dbValidation

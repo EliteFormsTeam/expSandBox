@@ -20,7 +20,8 @@ export class Test extends LitElement {
             required: true,
             alphanumeric: true,
             between: [3, 7]
-          }}
+          }},
+          url = 'http://localhost:3000/signup/checkusername'
         ></elite-form>
         <elite-form
           type='email'
@@ -34,7 +35,9 @@ export class Test extends LitElement {
             endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'
-          note='**note** please enter valid yahoo email'
+          note='**note** please enter valid yahoo email', 
+          url = 'http://localhost:3000/signup/checkemail', 
+          errorBehavior = 'debounce'
         ></elite-form>
         <elite-form
           type='password'
