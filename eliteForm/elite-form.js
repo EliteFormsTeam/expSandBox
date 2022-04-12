@@ -56,7 +56,7 @@ export class EliteForm extends LitElement {
           id=${this.id} 
           type=${this.type}
           @input=${this.handleInput} 
-         
+          @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
           errorBehavior=${this.errorBehavior}
         }>
@@ -66,7 +66,6 @@ export class EliteForm extends LitElement {
       </div>
     `;
   }
-  // @blur=${this.handleValidation}
 
   handleSubmitTemp(event) { //*****not being used
     const { value } = event.target;
