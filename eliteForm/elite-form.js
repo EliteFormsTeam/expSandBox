@@ -62,6 +62,7 @@ export class EliteForm extends LitElement {
     for (let err in this.error) {
       error.push(html`<li>${this.error[err]}</li>`)
     }
+    // console.log('this.error before render', this.error)
 
     return html`
       <div class='elite-form' style=${styleMap(this.styles)}>

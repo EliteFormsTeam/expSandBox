@@ -32,9 +32,9 @@ export class Test extends LitElement {
           placeholder='username'
           id='username'
           .validationRules= ${{
-            required: true,
+            // required: true,
             alphanumeric: true,
-            between: [3, 7],
+            between: [2,7],
             checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -102,7 +102,7 @@ export class Test extends LitElement {
   }
 
   handleSubmit(arg) {
-    console.log(arg);
+    console.log('arg', arg);
   }
 
 }

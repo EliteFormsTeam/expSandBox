@@ -136,7 +136,7 @@ const internalValMethods = {
   min: function(node, devInput) {
     let error = true;
     const name = node.validationName || node.name || node.type
-    if (node.value.length >= devInput){
+    if (node.value && node.value.length >= devInput){
       error = false;
     }
     const err = {
@@ -149,7 +149,7 @@ const internalValMethods = {
   max: function(node, devInput) {
     let error = false;
     const name = node.validationName || node.name || node.type;
-    if (node.value.length > devInput){
+    if (node.value && node.value.length > devInput){
       error = true;
     }
     const err = {
@@ -162,7 +162,7 @@ const internalValMethods = {
   between: function(node, devInput) { // devInput is an array of [min, max]
     let error = true;
     const name = node.validationName || node.name || node.type;
-    if (node.value.length >= devInput[0] && node.value.length <= devInput[1]) {
+    if (node.value && node.value.length >= devInput[0] && node.value.length <= devInput[1]) {
       error = false;
     }
     const err = {
@@ -174,8 +174,8 @@ const internalValMethods = {
   
   checkExisting: async function(node, devInput) {  
     let error = false
-    console.log('validation node value: ', node.value)
-    console.log('fetch func results: ', devInput(node.value))
+    // console.log('validation node value: ', node.value)
+    // console.log('fetch func results: ', devInput(node.value))
     const result = await devInput(node.value)
     if (node.name === 'username' && result === true) {
       error = true
@@ -183,7 +183,7 @@ const internalValMethods = {
         message: error ? `Sorry, ${node.value} is unavailable.` : null,
         error: error
       }
-      console.log(`${node.value} error: `, err)
+      // console.log(`${node.value} error: `, err)
       return err;
     } else if (node.name === 'email' && result === true) {
       error = true
@@ -191,11 +191,11 @@ const internalValMethods = {
         message: error ? `${node.value} belongs to an existing account. Please sign in.` : null,
         error: error
       }
-      console.log(err)
+      // console.log(err)
       return err
     }
     return {
-      message: null, 
+      message: null,
       error: false
     }
   }, 
