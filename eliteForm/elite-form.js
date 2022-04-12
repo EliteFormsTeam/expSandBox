@@ -1,7 +1,6 @@
 import {LitElement, html, css} from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
 import internalValMethods from './elite-form-rules'
-import asyncValMethods from './async-rules'
 import debounce from './debounce'
 
 export class EliteForm extends LitElement {
@@ -46,7 +45,6 @@ export class EliteForm extends LitElement {
 
   static state = {
     internalValMethods: internalValMethods, 
-    asyncValMethods: asyncValMethods,
     debounce: debounce
   }
 
