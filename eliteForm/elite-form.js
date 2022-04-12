@@ -4,6 +4,7 @@ import internalValMethods from './elite-form-rules'
 export class EliteForm extends LitElement {
 
   static properties = {
+    eliteForm: {},
     id: {},
     type: {},
     label: {},
@@ -23,6 +24,7 @@ export class EliteForm extends LitElement {
 
   constructor() {
     super();
+    this.eliteForm = true;
     this.id = '';
     this.type = '';
     this.label = '';
@@ -79,7 +81,6 @@ export class EliteForm extends LitElement {
       if (result.error) error[rule] = result.message
     }
     this.error = error
-    console.log(this.error)
     this.requestUpdate()
   }
   
