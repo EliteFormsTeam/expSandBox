@@ -19,6 +19,10 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             alphanumeric: true,
+<<<<<<< HEAD
+=======
+            between: [3, 7]
+>>>>>>> main
           }}
         ></elite-form>
         <elite-form
