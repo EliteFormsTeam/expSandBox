@@ -43,7 +43,6 @@ export class EliteForm extends LitElement {
     errors: {},
     errorBehavior: {}, 
     validationName: {},
-    dbValidationRequest: {}
   }
 
   static state = {
@@ -69,7 +68,6 @@ export class EliteForm extends LitElement {
     this.inputStyles = ''; 
     this.noteStyles = ''; 
     this.errorStyles = '';
-    this.dbValidationRequest = ''
   }
 
   // style=${styleMap(this.styles)}
@@ -110,12 +108,6 @@ export class EliteForm extends LitElement {
       </div>
     `;
   }
-
-  // handleSubmitTemp(event) { //*****not being used
-  //   const { value } = event.target;
-  //   this.value = value;
-  //   // console.log(this.value);
-  // }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
 

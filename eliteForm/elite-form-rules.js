@@ -89,10 +89,10 @@ const internalValMethods = {
     return err // ***** switched this to return the object in order to collate all the errors
   },
 
-  alphanumeric: async function(node) {
+  alphanumeric: function(node) {
     const alphanumericRegex = /[^a-zA-Z0-9]+/g
     const name = node.validationName || node.name || node.type
-    const error = await alphanumericRegex.test(node.value)
+    const error = alphanumericRegex.test(node.value)
     const err = {
       message: error ? `${name} can only contain letters and numbers` : null,
       error: error
