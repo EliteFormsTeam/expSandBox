@@ -11,14 +11,6 @@ export class Test extends LitElement {
   // styles= '{border: '1px solid red', 'background-color': 'gray'}'
   // .styles= ${styles}
 
-
-  submitForm() {
-    validateForm(this, this.handleSubmit)
-  }
-
-  // @click=${() => checkAndGet(this.handleSubmit)}
-
-
   render() {
 
     const labelStyles= {border: '1px solid orange', 'background-color': 'lightgray'};
@@ -47,7 +39,6 @@ export class Test extends LitElement {
               } 
             })
           }}
-          errorBehavior = 'debounce'
           .labelStyles= ${labelStyles}
           .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
         ></elite-form>
@@ -96,7 +87,7 @@ export class Test extends LitElement {
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
         <div> hello </div> -->
-        <button  @click=${this.submitForm} type='submit'>submit</button>
+        <button  @click=${() => validateForm(this, this.handleSubmit)} type='submit'>submit</button>
       </div>
     `;
   }
