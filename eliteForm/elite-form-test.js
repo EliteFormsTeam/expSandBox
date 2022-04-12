@@ -31,16 +31,16 @@ export class Test extends LitElement {
             alphanumeric: true,
             between: [3, 7],
             checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({username: inputValue})
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data === true) {
-              return true
-            } 
-          })
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({username: inputValue})
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data === true) {
+                return true
+              } 
+            })
           }}
           errorBehavior = 'debounce'
           
@@ -66,7 +66,7 @@ export class Test extends LitElement {
             if (data === true) {
               return true
             } 
-          }), 
+          })
           // endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'

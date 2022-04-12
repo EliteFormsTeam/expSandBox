@@ -1,9 +1,8 @@
 import {LitElement, html, css} from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
 import internalValMethods from './elite-form-rules'
+import asyncValMethods from './async-rules'
 import debounce from './debounce'
-
-
 
 export class EliteForm extends LitElement {
   static get styles() {
@@ -39,6 +38,7 @@ export class EliteForm extends LitElement {
     note: {},
     name: {},
     validationRules: {}, // this is the prop that the dev passes in
+    asyncValidationRules: {},
     errors: {},
     errorBehavior: {}, 
     validationName: {},
@@ -46,6 +46,7 @@ export class EliteForm extends LitElement {
 
   static state = {
     internalValMethods: internalValMethods, 
+    asyncValMethods: asyncValMethods,
     debounce: debounce
   }
 
@@ -108,31 +109,48 @@ export class EliteForm extends LitElement {
   }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
+  asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
 
   handleInput(event) {
     const { value } = event.target;
     this.value = value
     console.log(this.value)
+
+    // if (this.asyncValidationRules) {
+    //   if (this.errorBehavior === 'debounce') {
+    //     this.asyncWithDebounce()
+    //   } else {
+    //     this.handdleAsyncValidation()
+    //   }
+    // } 
+    // else 
     if (this.errorBehavior === 'debounce') {
       this.withDebounce()    
     } else {
       this.handleValidation()
     }
+    
   }
 
-  async handleValidation() {
+   handleValidation() {
     const error = {}
     for (let rule in this.validationRules) {
-      if (rule === 'checkExistingEmail' || rule === 'checkExistingUsername') {
-        console.log(
-          'inside async'
-        )
-          const result = await internalValMethods[rule](this, this.validationRules[rule])
-          if (result.error) {
-            error[rule] = result.message
-          }
+      if (rule === 'checkExisting') {
+        this.handdleAsyncValidation()
       }
       const result = internalValMethods[rule](this, this.validationRules[rule])
+      if (result.error) {
+        error[rule] = result.message
+      }
+    }
+    this.error = error
+    this.requestUpdate()
+  }
+
+  async handdleAsyncValidation() {
+    const error = {}
+    for (let rule in this.validationRules) {
+      const result = await internalValMethods[rule](this, this.validationRules[rule])
       if (result.error) {
         error[rule] = result.message
       }

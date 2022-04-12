@@ -169,7 +169,7 @@ const internalValMethods = {
   checkExisting: async function(node, devInput) {  
     let error = false
     console.log('validation node value: ', node.value)
-    console.log('fetch func results: ', await devInput(node.value))
+    console.log('fetch func results: ', devInput(node.value))
     const result = await devInput(node.value)
     if (node.name === 'username' && result === true) {
       error = true
