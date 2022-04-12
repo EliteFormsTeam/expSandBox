@@ -1,12 +1,22 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css} from 'lit';
 import './elite-form'
 import '../LitElements/name.js';
 import '../LitElements/email.js';
 import '../LitElements/password';
 
 export class Test extends LitElement {
+  // static styles = css`
+  //   elite-form{
+  //     color: red;
+  //   }
+  // `;
+  // styles= '{border: '1px solid red', 'background-color': 'gray'}'
+  // .styles= ${styles}
+
 
   render() {
+
+    const labelStyles= {border: '1px solid orange', 'background-color': 'lightgray'};
 
     return html`
       <div id='main'>
@@ -20,7 +30,10 @@ export class Test extends LitElement {
             required: true,
             alphanumeric: true,
             between: [3, 7]
-          }},
+          }}
+          .labelStyles= ${labelStyles}
+          .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
+
           url = 'http://localhost:3000/signup/checkusername'
         ></elite-form>
         <elite-form
@@ -35,7 +48,8 @@ export class Test extends LitElement {
             endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'
-          note='**note** please enter valid yahoo email', 
+          note='**note** please enter valid yahoo email'
+          .noteStyles= ${{color: 'purple'}}
           url = 'http://localhost:3000/signup/checkemail', 
           errorBehavior = 'debounce'
         ></elite-form>
