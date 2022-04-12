@@ -1,12 +1,22 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css} from 'lit';
 import './elite-form'
 import '../LitElements/name.js';
 import '../LitElements/email.js';
 import '../LitElements/password';
 
 export class Test extends LitElement {
+  // static styles = css`
+  //   elite-form{
+  //     color: red;
+  //   }
+  // `;
+  // styles= '{border: '1px solid red', 'background-color': 'gray'}'
+  // .styles= ${styles}
+
 
   render() {
+
+    const labelStyles= {border: '1px solid red', 'background-color': 'gray'};
 
     return html`
       <div id='main'>
@@ -21,6 +31,7 @@ export class Test extends LitElement {
             alphanumeric: true,
             between: [3, 7]
           }}
+          .labelstyles= ${labelStyles}
         ></elite-form>
         <elite-form
           type='email'

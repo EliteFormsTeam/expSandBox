@@ -11,11 +11,21 @@ export class EliteForm extends LitElement {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* align-items: center; */
         padding: 10px;
-      }
-    `
+       }`
   }
+
+  // static styles = [
+  //   css`
+  //     :host {
+  //       color: blue;
+  //       display: flex;
+  //       flex-direction: column;
+  //       justify-content: space-between;
+  //       /* align-items: center; */
+  //       padding: 10px;
+  //     }`
+  // ];
 
   static properties = {
     id: {},
@@ -28,8 +38,8 @@ export class EliteForm extends LitElement {
     validationRules: {}, // this is the prop that the dev passes in
     errors: {},
     errorBehavior: {}, 
-    styles: {}, 
     validationName: {},
+    // styles: {},
   }
 
   static state = {
@@ -48,8 +58,8 @@ export class EliteForm extends LitElement {
     this.note = '';
     this.name = '';
     this.errors = '';
-    this.errorBehavior = '';
-    this.styles = {}
+    this.errorBehavior = ''; 
+    this.lablestyles = '';
   }
 
   render() {
@@ -60,8 +70,12 @@ export class EliteForm extends LitElement {
     }
 
     return html`
-      <div class='elite-form, ${this.class}'>
-        <label for=${this.id}>${this.label && this.label}</label>
+      <div class='elite-form'>
+        <label 
+          for=${this.id}
+          style=${styleMap(this.styles)}>
+          ${this.label && this.label}
+        </label>
         <input 
           id=${this.id} 
           type=${this.type}
@@ -69,7 +83,11 @@ export class EliteForm extends LitElement {
           @blur=${this.handleInput}
           placeholder=${this.placeholder} 
         }>
-        <div class="note" ?hidden=${!this.note} style=${styleMap(this.styles)}>${this.note}</div>
+        <div class="note" 
+          ?hidden=${!this.note} 
+          style=${styleMap(this.styles)}>
+            ${this.note}
+        </div>
         <ul class="error">
           ${error} 
         </ul>
