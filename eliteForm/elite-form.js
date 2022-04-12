@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
 import internalValMethods from './elite-form-rules'
 import dbValidation from './db-validation'
+import debounce from './debounce'
 
 
 
@@ -42,12 +43,13 @@ export class EliteForm extends LitElement {
     errors: {},
     errorBehavior: {}, 
     validationName: {},
-    // labelStyles: {},
+    url: {}
   }
 
   static state = {
     internalValMethods: internalValMethods, 
     dbValidation: dbValidation,  // we import this from elite-forms-rules
+    debounce: debounce
   }
 
   constructor() {
@@ -67,6 +69,7 @@ export class EliteForm extends LitElement {
     this.inputStyles = ''; 
     this.noteStyles = ''; 
     this.errorStyles = '';
+    this.url = ''
   }
 
   // style=${styleMap(this.styles)}
@@ -91,7 +94,8 @@ export class EliteForm extends LitElement {
           @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
           style=${styleMap(this.inputStyles)}
-        }>
+          errorBehavior=${this.errorBehavior}
+        >
         <div 
           class="note" 
           ?hidden=${!this.note} 
@@ -111,19 +115,38 @@ export class EliteForm extends LitElement {
     const { value } = event.target;
     this.value = value;
     // console.log(this.value);
-    this.requestUpdate();
-    if (this.id === 'email') {
-      dbValidation.existingEmail(this, this.url)
-    }
-    else if (this.id === 'username') {
-      dbValidation.existingUsername(this, this.url)
-    }
   }
 
+  // debounce(func, wait=500) {
+  //   let timeout
+  //   return function(...args) {
+  //     const context = this
+  //     clearTimeout(timeout)
+  //     timeout = setTimeout(() => func.apply(context, args), wait)
+  //   }
+  // }
+
   handleInput(event) {
+    const withDebounce = debounce(() => this.handleValidation(), 1000)
     const { value } = event.target;
     this.value = value
-    this.handleValidation()
+    console.log(this.value)
+    if (this.errorBehavior === 'debounce') {
+      return withDebounce()    
+    } else {
+      this.handleValidation()
+    }
+
+    
+
+    // if (this.id === 'email') {
+    //   dbValidation.checkExistingEmail(value, this.url)
+    // } 
+    // else if (this.id === 'username') {
+    //   dbValidation.checkExistingUsername(value, this.url)
+    // } else {
+    //   this.handleValidation()
+    // }
   }
 
   handleValidation() {
@@ -135,7 +158,6 @@ export class EliteForm extends LitElement {
     this.error = error
     this.requestUpdate()
   }
-  
 }
 
 window.customElements.define('elite-form', EliteForm)
