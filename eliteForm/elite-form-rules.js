@@ -89,10 +89,10 @@ const internalValMethods = {
     return err // ***** switched this to return the object in order to collate all the errors
   },
 
-  alphanumeric: function(node) {
+  alphanumeric: async function(node) {
     const alphanumericRegex = /[^a-zA-Z0-9]+/g
     const name = node.validationName || node.name || node.type
-    const error = alphanumericRegex.test(node.value)
+    const error = await alphanumericRegex.test(node.value)
     const err = {
       message: error ? `${name} can only contain letters and numbers` : null,
       error: error
@@ -166,6 +166,41 @@ const internalValMethods = {
     }
     return err;
   },
+  checkExistingUsername: async function(node, devInput) {  
+    const username = node.value
+    let error = false
+    console.log('validation username: ', username)
+    console.log('fetch func results: ', await devInput(username))
+    const result = await devInput(username)
+    if (result === true) {
+      error = true
+      const err = {
+        message: error ? `Sorry, ${username} is unavailable.` : null,
+        error: error
+      }
+      console.log('username error: ', err)
+      return err;
+    } 
+  }, 
+
+  checkExistingEmail: async function(node, devInput) {  
+    const email = node.value
+    let error = false
+    console.log('validation email: ', email)
+    console.log('fetch func results: ', await devInput(email))
+
+    const result = await devInput(email)
+    if (result === true) {
+      error = true
+      const err = {
+        message: error ? `${email} belongs to an existing account. Please sign in.` : null,
+        error: error
+      }
+      console.log('email error: ', err)
+      return err;
+    } 
+  }, 
+
 }
 
 export default internalValMethods;
