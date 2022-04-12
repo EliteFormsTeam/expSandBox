@@ -16,12 +16,9 @@ const internalValMethods = {
 
   //NOTE***developer needs to use escape variable when writing their custom strings***
   endsWith: function(node, devInput) { // node = the 'this' keyword. we need access to state, devInput = array of strings, represents list of strings that are allowed endings 
-    console.log(devInput.values)
     let error = true
     for (let i = 0; i < devInput.length; i++) {
-      console.log('we entered')
       const validEnding = RegExp(String.raw`.*${devInput[i]}$`)
-      console.log('howdy', validEnding)
       if (validEnding.test(node.value)) {
         error = false
         i = devInput.length
@@ -96,7 +93,6 @@ const internalValMethods = {
     const alphanumericRegex = /[^a-zA-Z0-9]+/g
     const name = node.validationName || node.name || node.type
     const error = alphanumericRegex.test(node.value)
-    console.log(node.value)
     const err = {
       message: error ? `${name} can only contain letters and numbers` : null,
       error: error
@@ -120,6 +116,16 @@ const internalValMethods = {
     const error = numberRegex.test(node.value)
     const err = {
       message: error ? `${name} must be a number` : null,
+      error: error
+    }
+    return err
+  },
+  password: function(node) {
+    const name = node.validationName || node.name || node.type
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    const error = !passwordRegex.test(node.value)
+    const err = {
+      message: error ? `${name} must be 8 characters long and contain at least: 1 number,\n1 uppercase character,\n1 lowercase character,\n1 special character (!,@,#,$,%,^,&,*)` : null,
       error: error
     }
     return err
@@ -160,8 +166,6 @@ const internalValMethods = {
     }
     return err;
   },
-
-
 }
 
 export default internalValMethods;
