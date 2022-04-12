@@ -1,8 +1,6 @@
 import {LitElement, html} from 'lit';
 import './elite-form'
-import '../LitElements/name.js';
-import '../LitElements/email.js';
-import '../LitElements/password';
+import validateForm from './validateForm'
 
 export class Test extends LitElement {
   // static styles = css`
@@ -12,6 +10,13 @@ export class Test extends LitElement {
   // `;
   // styles= '{border: '1px solid red', 'background-color': 'gray'}'
   // .styles= ${styles}
+
+
+  submitForm() {
+    validateForm(this, this.handleSubmit)
+  }
+
+  // @click=${() => checkAndGet(this.handleSubmit)}
 
 
   render() {
@@ -43,10 +48,10 @@ export class Test extends LitElement {
             })
           }}
           errorBehavior = 'debounce'
-          
+          .labelStyles= ${labelStyles}
+          .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
         ></elite-form>
-        <!-- .labelStyles= ${labelStyles},
-          .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}, -->
+        
         <elite-form
           type='email'
           label='Email:'
@@ -91,54 +96,9 @@ export class Test extends LitElement {
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
         <div> hello </div> -->
-        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
+        <button  @click=${this.submitForm} type='submit'>submit</button>
       </div>
     `;
-  }
-
-  /* This function is responsible for doing one last data validation of all the input fields
-  by default, it will data validate EVERY elite-form element and cache their values plus any other 
-  custom vanilla html input field values into an object and then invoke the callback. here, the callback
-  is to be the developers own handleSubmit function. 
-  there is an option to inclue an array, if the developer wanted to only do data validation for a certain
-  subset of the input fields*/
-  checkandget(callback, arr) {
-    const fields = this.shadowRoot.children.main.children
-    let fieldsCheck = true
-    const cache = {}
-
-    for (let singleElement in fields) {
-      const currentElement = fields[singleElement]
-      if (!isNaN(Number(singleElement))) {
-        if (Array.isArray(arr)) {
-          if (currentElement.eliteForm && arr.includes(currentElement.id)) {
-            cache[currentElement.id] = currentElement.value
-            currentElement.handleValidation()
-            if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
-          }else if (arr.includes(currentElement.id)) {
-            const { id, value } = fields[singleElement]
-            cache[id] = value
-          }
-        } else if (currentElement.eliteForm) {
-          if (!currentElement.value) {
-            currentElement.handleValidation()
-          }
-          cache[currentElement.id] = currentElement.value
-          if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
-        } else {
-          const { id, value } = fields[singleElement]
-          cache[id] = value
-        }
-      }
-    }
-    // console.log('fieldsCheck', fieldsCheck)
-    if (fieldsCheck) {
-      // console.log(cache)
-      // console.log(callback)
-      callback(cache)
-    } else {
-      console.log('bad form')
-    }
   }
 
   handleSubmit(arg) {
@@ -146,5 +106,4 @@ export class Test extends LitElement {
   }
 
 }
-
 window.customElements.define('test-', Test);

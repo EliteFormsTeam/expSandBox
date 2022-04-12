@@ -15,18 +15,6 @@ export class EliteForm extends LitElement {
        }`
   }
 
-  // static styles = [
-  //   css`
-  //     :host {
-  //       color: blue;
-  //       display: flex;
-  //       flex-direction: column;
-  //       justify-content: space-between;
-  //       /* align-items: center; */
-  //       padding: 10px;
-  //     }`
-  // ];
-
   static properties = {
     eliteForm: {},
     id: {},
@@ -90,7 +78,6 @@ export class EliteForm extends LitElement {
           @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
           style=${styleMap(this.inputStyles)}
-          errorBehavior=${this.errorBehavior}
         >
         <div 
           class="note" 
@@ -108,21 +95,11 @@ export class EliteForm extends LitElement {
   }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
-  asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
+  // asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
 
   handleInput(event) {
     const { value } = event.target;
     this.value = value
-    // console.log(this.value)
-
-    // if (this.asyncValidationRules) {
-    //   if (this.errorBehavior === 'debounce') {
-    //     this.asyncWithDebounce()
-    //   } else {
-    //     this.handdleAsyncValidation()
-    //   }
-    // } 
-    // else 
     if (this.errorBehavior === 'debounce') {
       this.withDebounce()    
     } else {
@@ -131,13 +108,13 @@ export class EliteForm extends LitElement {
     
   }
 
-   handleValidation() {
+  handleValidation() {
     const error = {}
     for (let rule in this.validationRules) {
       if (rule === 'checkExisting') {
         this.handdleAsyncValidation()
       }
-      const result = internalValMethods[rule](this, this.validationRules[rule])
+      const result =  internalValMethods[rule](this, this.validationRules[rule])
       if (result.error) {
         error[rule] = result.message
       }
@@ -157,14 +134,6 @@ export class EliteForm extends LitElement {
     this.error = error
     this.requestUpdate()
   }
-
-  // console.log('inside handlevalidation: ', rule)
-  // // console.log(this.validationRules[rule])
-  // if (rule === 'checkExistingEmail' || rule === 'checkExistingEmail') {
-  //   const result = await internalValMethods[rule](this, this.validationRules[rule])
-  //   if (result.error) {
-  //     error[rule] = result.message
-  //   }
 }
 
 window.customElements.define('elite-form', EliteForm)
