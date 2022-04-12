@@ -166,41 +166,30 @@ const internalValMethods = {
     }
     return err;
   },
-  checkExistingUsername: async function(node, devInput) {  
-    const username = node.value
+  checkExisting: async function(node, devInput) {  
     let error = false
-    console.log('validation username: ', username)
-    console.log('fetch func results: ', await devInput(username))
-    const result = await devInput(username)
-    if (result === true) {
+    console.log('validation node value: ', node.value)
+    console.log('fetch func results: ', await devInput(node.value))
+    const result = await devInput(node.value)
+    if (node.name === 'username' && result === true) {
       error = true
       const err = {
-        message: error ? `Sorry, ${username} is unavailable.` : null,
+        message: error ? `Sorry, ${node.value} is unavailable.` : null,
         error: error
       }
-      console.log('username error: ', err)
+      console.log(`${node.value} error: `, err)
       return err;
-    } 
-  }, 
-
-  checkExistingEmail: async function(node, devInput) {  
-    const email = node.value
-    let error = false
-    console.log('validation email: ', email)
-    console.log('fetch func results: ', await devInput(email))
-
-    const result = await devInput(email)
-    if (result === true) {
+    } else if (node.name === 'email' && result === true) {
       error = true
       const err = {
-        message: error ? `${email} belongs to an existing account. Please sign in.` : null,
+        message: error ? `${node.value} belongs to an existing account. Please sign in.` : null,
         error: error
       }
-      console.log('email error: ', err)
-      return err;
-    } 
+      console.log(err)
+      return err
+    }
+    return
   }, 
-
 }
 
 export default internalValMethods;

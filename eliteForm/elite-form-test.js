@@ -30,7 +30,7 @@ export class Test extends LitElement {
             required: true,
             alphanumeric: true,
             between: [3, 7],
-            checkExistingUsername: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
+            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({username: inputValue})
@@ -56,7 +56,7 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             email: true,
-            checkExistingEmail: (inputValue) => fetch('http://localhost:3000/signup/checkemail', {
+            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkemail', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({email: inputValue})
