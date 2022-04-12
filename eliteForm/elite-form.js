@@ -41,13 +41,12 @@ export class EliteForm extends LitElement {
     this.eliteForm = true;
     this.id = '';
     this.class = '';
-    this.type = '';
+    this.type = 'text';
     this.label = '';
     this.placeholder = '';
     this.note = '';
     this.name = '';
     this.errors = '';
-    this.errorBehavior = ''; 
     this.styles = ''; // styles for the most outer div
     this.labelStyles = '';  
     this.inputStyles = ''; 
@@ -75,7 +74,7 @@ export class EliteForm extends LitElement {
           id=${this.id} 
           type=${this.type}
           @input=${this.handleInput} 
-          @blur=${this.handleValidation}
+          @blur=${this.handleBlur}
           placeholder=${this.placeholder} 
           style=${styleMap(this.inputStyles)}
         >
@@ -95,7 +94,12 @@ export class EliteForm extends LitElement {
   }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
-  // asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
+  
+  handleBlur() {
+    if (this.errorBehavior === 'blur') {
+      this.handleValidation()
+    }
+  }
 
   handleInput(event) {
     const { value } = event.target;
@@ -105,7 +109,6 @@ export class EliteForm extends LitElement {
     } else {
       this.handleValidation()
     }
-    
   }
 
   handleValidation() {

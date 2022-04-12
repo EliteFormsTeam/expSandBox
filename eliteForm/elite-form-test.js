@@ -16,9 +16,6 @@ export class Test extends LitElement {
     validateForm(this, this.handleSubmit)
   }
 
-  // @click=${() => checkAndGet(this.handleSubmit)}
-
-
   render() {
 
     const labelStyles= {border: '1px solid orange', 'background-color': 'lightgray'};
@@ -47,7 +44,6 @@ export class Test extends LitElement {
               } 
             })
           }}
-          errorBehavior = 'debounce'
           .labelStyles= ${labelStyles}
           .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
         ></elite-form>

@@ -24,8 +24,10 @@ function validateForm(node, callback, arr) {
           cache[id] = value
         }
       } else if (currentElement.eliteForm) {
+        if (!currentElement.value) {
+          currentElement.handleValidation()
+        }
         cache[currentElement.id] = currentElement.value
-        currentElement.handleValidation()
         if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
       } else {
         const { id, value } = fields[singleElement]
