@@ -19,11 +19,9 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             alphanumeric: true,
-<<<<<<< HEAD
-=======
             between: [3, 7]
->>>>>>> main
-          }}
+          }},
+          url = 'http://localhost:3000/signup/checkusername'
         ></elite-form>
         <elite-form
           type='email'
@@ -37,7 +35,9 @@ export class Test extends LitElement {
             endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'
-          note='**note** please enter valid yahoo email'
+          note='**note** please enter valid yahoo email', 
+          url = 'http://localhost:3000/signup/checkemail', 
+          errorBehavior = 'debounce'
         ></elite-form>
         <div> howdy </div>
         <elite-form

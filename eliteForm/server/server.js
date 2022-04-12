@@ -4,7 +4,7 @@ const PORT = 3000;
 import dbController from './dbController.js'
 import cors from 'cors'
 
-app.use(cors({origin: 'http://localhost:8000',credentials: true,}));
+app.use(cors({origin: 'http://localhost:8002',credentials: true,}));
 app.use(express.json());
 
 app.post('/signup/checkusername', dbController.checkForUsername, (req, res) => {
@@ -14,12 +14,6 @@ app.post('/signup/checkusername', dbController.checkForUsername, (req, res) => {
 app.post('/signup/checkemail', dbController.checkForEmail, (req, res) => {
   return res.status(200).json(res.locals.email)
 })
-
-app.post('signup/', dbController.addUser, (req, res) => {
-  return res.status(200).json({ userid: res.locals.userId });
-});
-
-
 
 // Unknown route handler
 app.use((req, res) => res.sendStatus(404));
