@@ -100,6 +100,7 @@ const internalValMethods = {
     // console.log(err)
     return err
   },
+
   alpha: function(node) {
     const name = node.validationName || node.name || node.type
     const alphaRegex = /[^a-zA-Z]+/g
@@ -110,6 +111,7 @@ const internalValMethods = {
     }
     return err
   },
+
   number: function(node) {
     const name = node.validationName || node.name || node.type
     const numberRegex = /[^0-9]+/g
@@ -130,6 +132,7 @@ const internalValMethods = {
     }
     return err
   },
+
   min: function(node, devInput) {
     let error = true;
     const name = node.validationName || node.name || node.type
@@ -142,6 +145,7 @@ const internalValMethods = {
     }
     return err;
   },
+
   max: function(node, devInput) {
     let error = false;
     const name = node.validationName || node.name || node.type;
@@ -154,6 +158,7 @@ const internalValMethods = {
     }
     return err;
   },
+
   between: function(node, devInput) { // devInput is an array of [min, max]
     let error = true;
     const name = node.validationName || node.name || node.type;
@@ -166,10 +171,11 @@ const internalValMethods = {
     }
     return err;
   },
+  
   checkExisting: async function(node, devInput) {  
     let error = false
-    console.log('validation node value: ', node.value)
-    console.log('fetch func results: ', devInput(node.value))
+    // console.log('validation node value: ', node.value)
+    // console.log('fetch func results: ', devInput(node.value))
     const result = await devInput(node.value)
     if (node.name === 'username' && result === true) {
       error = true
@@ -177,7 +183,7 @@ const internalValMethods = {
         message: error ? `Sorry, ${node.value} is unavailable.` : null,
         error: error
       }
-      console.log(`${node.value} error: `, err)
+      // console.log(`${node.value} error: `, err)
       return err;
     } else if (node.name === 'email' && result === true) {
       error = true
@@ -185,10 +191,13 @@ const internalValMethods = {
         message: error ? `${node.value} belongs to an existing account. Please sign in.` : null,
         error: error
       }
-      console.log(err)
+      // console.log(err)
       return err
     }
-    return
+    return {
+      message: null,
+      error: false
+    }
   }, 
 }
 

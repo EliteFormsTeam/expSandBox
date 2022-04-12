@@ -21,7 +21,7 @@
     "docs:serve": "wds --root-dir=docs --node-resolve --watch",
     "analyze": "cem analyze --litelement --globs \"**/*.js\" --exclude docs",
     "analyze:watch": "cem analyze --litelement --globs \"**/*.js\" --exclude docs --watch",
-    "serve": "wds --watch & nodemon ./eliteForm/server/server.js",
+    "serve": "wds --watch & nodemon ./eliteFormMockDB/server/server.js",
     "serve:prod": "MODE=prod npm run serve",
     "test": "npm run test:dev && npm run test:prod",
     "test:dev": "wtr",

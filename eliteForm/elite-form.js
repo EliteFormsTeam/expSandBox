@@ -6,14 +6,29 @@ import debounce from './debounce'
 export class EliteForm extends LitElement {
   static get styles() {
     return css`
-      .elite-form{
+      :host {
+          /* font-family: 'Roboto Slab', serif; */
+          font-family: monospace;
+      }
+      .elite-form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 10px;
-        font-family: 'Roboto Slab', serif;
-       }`
-  }
+       }
+      label {
+        font-size: 1.3em;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+      }
+      input {
+        font-family: monospace;
+      }
+      ul {
+        list-style-type: "✕ ";
+      }
+     
+  `}
 
   static properties = {
     eliteForm: {},
@@ -60,6 +75,7 @@ export class EliteForm extends LitElement {
     for (let err in this.error) {
       error.push(html`<li>${this.error[err]}</li>`)
     }
+    // console.log('this.error before render', this.error)
 
     return html`
       <div class='elite-form' style=${styleMap(this.styles)}>
@@ -75,7 +91,6 @@ export class EliteForm extends LitElement {
           @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
           style=${styleMap(this.inputStyles)}
-          errorBehavior=${this.errorBehavior}
         >
         <div 
           class="note" 
@@ -93,21 +108,11 @@ export class EliteForm extends LitElement {
   }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
-  asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
+  // asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
 
   handleInput(event) {
     const { value } = event.target;
     this.value = value
-    console.log(this.value)
-
-    // if (this.asyncValidationRules) {
-    //   if (this.errorBehavior === 'debounce') {
-    //     this.asyncWithDebounce()
-    //   } else {
-    //     this.handdleAsyncValidation()
-    //   }
-    // } 
-    // else 
     if (this.errorBehavior === 'debounce') {
       this.withDebounce()    
     } else {
@@ -116,13 +121,13 @@ export class EliteForm extends LitElement {
     
   }
 
-   handleValidation() {
+  handleValidation() {
     const error = {}
     for (let rule in this.validationRules) {
       if (rule === 'checkExisting') {
         this.handdleAsyncValidation()
       }
-      const result = internalValMethods[rule](this, this.validationRules[rule])
+      const result =  internalValMethods[rule](this, this.validationRules[rule])
       if (result.error) {
         error[rule] = result.message
       }
@@ -142,14 +147,6 @@ export class EliteForm extends LitElement {
     this.error = error
     this.requestUpdate()
   }
-
-  // console.log('inside handlevalidation: ', rule)
-  // // console.log(this.validationRules[rule])
-  // if (rule === 'checkExistingEmail' || rule === 'checkExistingEmail') {
-  //   const result = await internalValMethods[rule](this, this.validationRules[rule])
-  //   if (result.error) {
-  //     error[rule] = result.message
-  //   }
 }
 
 window.customElements.define('elite-form', EliteForm)

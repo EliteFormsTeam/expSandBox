@@ -28,7 +28,7 @@ dbController.checkForEmail = async(req, res, next) => {
     WHERE email=$1`
   
   const checkForEmail = await db.query(checkForEmailQuery, [email])
-  // console.log(checkForEmail)
+  console.log(checkForEmail)
 
   if (checkForEmail.rows.length) {
     res.locals.email = true

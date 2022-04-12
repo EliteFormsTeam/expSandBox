@@ -1,27 +1,125 @@
 import {LitElement, html, css} from 'lit';
 import './elite-form'
-import '../LitElements/name.js';
-import '../LitElements/email.js';
-import '../LitElements/password';
+import validateForm from './validateForm'
 
 export class Test extends LitElement {
-  // static styles = css`
-  //   .elite-form{
-  //     color: red;
-  //   }
-  // `;
-  // styles= '{border: '1px solid red', 'background-color': 'gray'}'
-  // .styles= ${styles}
+  static styles = css`
+    :host {
+      
+    }
+  /* styling for the submit button starts*/
+    .btn {
+      width: 100%;
+      display: block;
+      margin: 50px 0px;
+      padding: 14px 16px;
+      background: transparent;
+      outline: none;
+      border: 0;
+      color: #000000;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+      font-family: monospace;
+      font-size: 16px;
+    }
 
-  
+    .block-cube {
+      position: relative;
+    }
+    .block-cube .bg-top {
+      position: absolute;
+      height: 10px;
+      background: #ffffff;
+      background: linear-gradient(90deg, #020024 0%, #340979 37%, #00d4ff 94%);
+      bottom: 100%;
+      left: 5px;
+      right: -5px;
+      transform: skew(-45deg, 0);
+      margin: 0;
+    }
+    .block-cube .bg-top .bg-inner {
+      bottom: 0;
+    }
+    .block-cube .bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: #ffffff;
+      background: linear-gradient(90deg, #020024 0%, #340979 37%, #00d4ff 94%);
+    }
+    .block-cube .bg-right {
+      position: absolute;
+      background: #ffffff;
+      background: #00d4ff;
+      top: -5px;
+      z-index: 0;
+      bottom: 5px;
+      width: 10px;
+      left: 100%;
+      transform: skew(0, -45deg);
+    }
+    
+    .block-cube .bg-right .bg-inner {
+      left: 0;
+    }
+    .block-cube .bg .bg-inner {
+      transition: all 0.2s ease-in-out;
+    }
+    .block-cube .bg-inner {
+      background: #ffffff;
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      right: 2px;
+      bottom: 2px;
+    }
+    .block-cube .text {
+      position: relative;
+      z-index: 2;
+    }
+    .block-cube.block-input input {
+      position: relative;
+      z-index: 2;
+    }
+   
+    .block-cube.block-input .bg-top,
+    .block-cube.block-input .bg-right,
+    .block-cube.block-input .bg {
+      background: rgba(255, 255, 255, 0.5);
+      transition: background 0.2s ease-in-out;
+    }
+    .block-cube.block-input .bg-right .bg-inner,
+    .block-cube.block-input .bg-top .bg-inner {
+      transition: all 0.2s ease-in-out;
+    }
+   
+    .block-cube.block-cube-hover:focus .bg .bg-inner, 
+    .block-cube.block-cube-hover:hover .bg .bg-inner {
+      top: 100%;
+    }
+  /* styling for the submit button ends*/
+
+  `;
+
+
+  submitForm() {
+    validateForm(this, this.handleSubmit)
+  }
+
+  // @click=${() => checkAndGet(this.handleSubmit)}
+
+
   render() {
+    /* overriding stylings starts */
     const styles = {
       width: '500px',
       padding: '30px',
     }
 
     const labelStyles = {
-      color: '#66a3ff',
+      color: '#340979',
     };
 
     const inputStyles = {
@@ -30,19 +128,20 @@ export class Test extends LitElement {
       padding: '12px 20px',
       margin: '8px 0',
       'box-sizing': 'border-box',
-      'border-bottom': '2px solid #003399',
+      'border-bottom': '2px solid #340979',
       '-webkit-transition': '0.5s',
       transition: '0.5s',
       outline: 'none',
     };
 
     const noteStyles = {
-      color: '#66a3ff',
+      color: '#0099cc',
     };
 
     const errorStyles = {
-      color: '#003399',
-    };
+      color: '#5c00e6',
+    }; 
+    /* overriding stylings ends */
 
     return html`
       <div id='main'>
@@ -53,9 +152,9 @@ export class Test extends LitElement {
           placeholder='username'
           id='username'
           .validationRules= ${{
-            required: true,
+            // required: true,
             alphanumeric: true,
-            between: [3, 7],
+            between: [2,7],
             checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -74,7 +173,6 @@ export class Test extends LitElement {
           .errorStyles= ${errorStyles}
           .noteStyles= ${noteStyles}
           errorBehavior = 'debounce'
-          
         ></elite-form>
         
         <elite-form
@@ -125,56 +223,34 @@ export class Test extends LitElement {
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
         <div> hello </div> -->
-        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
+        <!-- <button  @click=${this.submitForm} type='submit'>submit</button> -->
+
+
+        <button 
+          class='btn block-cube block-cube-hover' 
+          @click=${this.submitForm} 
+          type='submit'>
+          <div class='bg-top'>
+            <div class='bg-inner'></div>
+          </div>
+          <div class='bg-right'>
+            <div class='bg-inner'></div>
+          </div>
+          <div class='bg'>
+            <div class='bg-inner'></div>
+          </div>
+          <div class='text'>
+            Submit
+          </div>
+        </button>
+
       </div>
     `;
   }
 
-  /* This function is responsible for doing one last data validation of all the input fields
-  by default, it will data validate EVERY elite-form element and cache their values plus any other 
-  custom vanilla html input field values into an object and then invoke the callback. here, the callback
-  is to be the developers own handleSubmit function. 
-  there is an option to inclue an array, if the developer wanted to only do data validation for a certain
-  subset of the input fields*/
-  checkandget(callback, arr) {
-    const fields = this.shadowRoot.children.main.children
-    console.log(fields)
-    let fieldsCheck = true
-    const cache = {}
-
-    for (let singleElement in fields) {
-      const currentElement = fields[singleElement]
-      if (!isNaN(Number(singleElement))) {
-        if (Array.isArray(arr)) {
-          if (currentElement.eliteForm && arr.includes(currentElement.id)) {
-            cache[currentElement.id] = currentElement.value
-            currentElement.handleValidation()
-            if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
-          }else if (arr.includes(currentElement.id)) {
-            const { id, value } = fields[singleElement]
-            cache[id] = value
-          }
-        } else if (currentElement.eliteForm) {
-          cache[currentElement.id] = currentElement.value
-          currentElement.handleValidation()
-          if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
-        } else {
-          const { id, value } = fields[singleElement]
-          cache[id] = value
-        }
-      }
-    }
-    if (fieldsCheck) {
-      callback(cache)
-    } else {
-      console.log('bad form')
-    }
-  }
-
   handleSubmit(arg) {
-    console.log(arg);
+    console.log('arg', arg);
   }
 
 }
-
 window.customElements.define('test-', Test);
