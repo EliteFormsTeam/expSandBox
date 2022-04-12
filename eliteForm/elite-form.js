@@ -28,6 +28,7 @@ export class EliteForm extends LitElement {
   // ];
 
   static properties = {
+    eliteForm: {},
     id: {},
     class: {},
     type: {},
@@ -50,6 +51,7 @@ export class EliteForm extends LitElement {
 
   constructor() {
     super();
+    this.eliteForm = true;
     this.id = '';
     this.class = '';
     this.type = '';
@@ -80,7 +82,7 @@ export class EliteForm extends LitElement {
           id=${this.id} 
           type=${this.type}
           @input=${this.handleInput} 
-          @blur=${this.handleInput}
+          @blur=${this.handleValidation}
           placeholder=${this.placeholder} 
         }>
         <div class="note" 
@@ -121,7 +123,6 @@ export class EliteForm extends LitElement {
       if (result.error) error[rule] = result.message
     }
     this.error = error
-    console.log(this.error)
     this.requestUpdate()
   }
   
