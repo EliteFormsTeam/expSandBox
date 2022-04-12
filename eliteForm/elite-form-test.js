@@ -6,17 +6,43 @@ import '../LitElements/password';
 
 export class Test extends LitElement {
   // static styles = css`
-  //   elite-form{
+  //   .elite-form{
   //     color: red;
   //   }
   // `;
   // styles= '{border: '1px solid red', 'background-color': 'gray'}'
   // .styles= ${styles}
 
-
+  
   render() {
+    const styles = {
+      width: '500px',
+      padding: '30px',
+    }
 
-    const labelStyles= {border: '1px solid orange', 'background-color': 'lightgray'};
+    const labelStyles = {
+      color: '#66a3ff',
+    };
+
+    const inputStyles = {
+      width: '100%',
+      border: '0px',
+      padding: '12px 20px',
+      margin: '8px 0',
+      'box-sizing': 'border-box',
+      'border-bottom': '2px solid #003399',
+      '-webkit-transition': '0.5s',
+      transition: '0.5s',
+      outline: 'none',
+    };
+
+    const noteStyles = {
+      color: '#66a3ff',
+    };
+
+    const errorStyles = {
+      color: '#003399',
+    };
 
     return html`
       <div id='main'>
@@ -29,12 +55,28 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             alphanumeric: true,
-            between: [3, 7]
+            between: [3, 7],
+            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({username: inputValue})
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data === true) {
+                return true
+              } 
+            })
           }}
+          .styles=${styles}
           .labelStyles= ${labelStyles}
-          .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
-          url = 'http://localhost:3000/signup/checkusername'
+          .inputStyles= ${inputStyles}
+          .errorStyles= ${errorStyles}
+          .noteStyles= ${noteStyles}
+          errorBehavior = 'debounce'
+          
         ></elite-form>
+        
         <elite-form
           type='email'
           label='Email:'
@@ -44,16 +86,30 @@ export class Test extends LitElement {
           .validationRules= ${{
             required: true,
             email: true,
-            endsWith: ['yahoo.com', 'bing.com']
+            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkemail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({email: inputValue})
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data === true) {
+              return true
+            } 
+          })
+          // endsWith: ['yahoo.com', 'bing.com']
           }}
           validationName='yahoo email'
           note='**note** please enter valid yahoo email'
-          .noteStyles= ${{color: 'purple'}}
-          url = 'http://localhost:3000/signup/checkemail', 
           errorBehavior = 'debounce'
+          .styles=${styles}
+          .labelStyles= ${labelStyles}
+          .inputStyles= ${inputStyles}
+          .errorStyles= ${errorStyles}
+          .noteStyles= ${noteStyles}
         ></elite-form>
-        <div> howdy </div>
-        <elite-form
+        <!-- <div> howdy </div> -->
+        <!-- <elite-form
           type='password'
           label='Password:'
           name='password'
@@ -64,15 +120,13 @@ export class Test extends LitElement {
             password: true,
           }}
           validationName='a strong password'
-        ></elite-form>
-        <div> yessir </div>
+        ></elite-form> -->
+        <!-- <div> yessir </div>
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
-        <div> hello </div>
+        <div> hello </div> -->
         <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
       </div>
-
-      
     `;
   }
 

@@ -1,10 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
 import internalValMethods from './elite-form-rules'
-import dbValidation from './db-validation'
 import debounce from './debounce'
-
-
 
 export class EliteForm extends LitElement {
   static get styles() {
@@ -18,18 +15,6 @@ export class EliteForm extends LitElement {
        }`
   }
 
-  // static styles = [
-  //   css`
-  //     :host {
-  //       color: blue;
-  //       display: flex;
-  //       flex-direction: column;
-  //       justify-content: space-between;
-  //       /* align-items: center; */
-  //       padding: 10px;
-  //     }`
-  // ];
-
   static properties = {
     eliteForm: {},
     id: {},
@@ -40,17 +25,15 @@ export class EliteForm extends LitElement {
     note: {},
     name: {},
     validationRules: {}, // this is the prop that the dev passes in
+    asyncValidationRules: {},
     errors: {},
     errorBehavior: {}, 
     validationName: {},
-    url: {}
   }
 
   static state = {
     internalValMethods: internalValMethods, 
-    dbValidation: dbValidation,  
     debounce: debounce
-    // we import this from elite-forms-rules
   }
 
   constructor() {
@@ -70,8 +53,6 @@ export class EliteForm extends LitElement {
     this.inputStyles = ''; 
     this.noteStyles = ''; 
     this.errorStyles = '';
-    this.errorBehavior = '';
-    this.url = '';
   }
 
   render() {
@@ -111,53 +92,64 @@ export class EliteForm extends LitElement {
     `;
   }
 
-  handleSubmitTemp(event) { //*****not being used
-    const { value } = event.target;
-    this.value = value;
-    // console.log(this.value);
-  }
-
-  // debounce(func, wait=500) {
-  //   let timeout
-  //   return function(...args) {
-  //     const context = this
-  //     clearTimeout(timeout)
-  //     timeout = setTimeout(() => func.apply(context, args), wait)
-  //   }
-  // }
+  withDebounce = debounce(() => this.handleValidation(), 1000)
+  asyncWithDebounce = debounce(() => this.handdleAsyncValidation(), 1000)
 
   handleInput(event) {
-    const withDebounce = debounce(() => this.handleValidation(), 1000)
     const { value } = event.target;
     this.value = value
     console.log(this.value)
+
+    // if (this.asyncValidationRules) {
+    //   if (this.errorBehavior === 'debounce') {
+    //     this.asyncWithDebounce()
+    //   } else {
+    //     this.handdleAsyncValidation()
+    //   }
+    // } 
+    // else 
     if (this.errorBehavior === 'debounce') {
-      return withDebounce()    
+      this.withDebounce()    
     } else {
       this.handleValidation()
     }
-
     
-
-    // if (this.id === 'email') {
-    //   dbValidation.checkExistingEmail(value, this.url)
-    // } 
-    // else if (this.id === 'username') {
-    //   dbValidation.checkExistingUsername(value, this.url)
-    // } else {
-    //   this.handleValidation()
-    // }
   }
 
-  handleValidation() {
+   handleValidation() {
     const error = {}
     for (let rule in this.validationRules) {
+      if (rule === 'checkExisting') {
+        this.handdleAsyncValidation()
+      }
       const result = internalValMethods[rule](this, this.validationRules[rule])
-      if (result.error) error[rule] = result.message
+      if (result.error) {
+        error[rule] = result.message
+      }
     }
     this.error = error
     this.requestUpdate()
   }
+
+  async handdleAsyncValidation() {
+    const error = {}
+    for (let rule in this.validationRules) {
+      const result = await internalValMethods[rule](this, this.validationRules[rule])
+      if (result.error) {
+        error[rule] = result.message
+      }
+    }
+    this.error = error
+    this.requestUpdate()
+  }
+
+  // console.log('inside handlevalidation: ', rule)
+  // // console.log(this.validationRules[rule])
+  // if (rule === 'checkExistingEmail' || rule === 'checkExistingEmail') {
+  //   const result = await internalValMethods[rule](this, this.validationRules[rule])
+  //   if (result.error) {
+  //     error[rule] = result.message
+  //   }
 }
 
 window.customElements.define('elite-form', EliteForm)
