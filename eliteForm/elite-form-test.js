@@ -33,6 +33,7 @@ export class Test extends LitElement {
           }}
           .labelStyles= ${labelStyles}
           .styles=${{color: 'darkgreen', 'background-color': 'aliceblue'}}
+          url = 'http://localhost:3000/signup/checkusername'
         ></elite-form>
         <elite-form
           type='email'
@@ -48,6 +49,8 @@ export class Test extends LitElement {
           validationName='yahoo email'
           note='**note** please enter valid yahoo email'
           .noteStyles= ${{color: 'purple'}}
+          url = 'http://localhost:3000/signup/checkemail', 
+          errorBehavior = 'debounce'
         ></elite-form>
         <div> howdy </div>
         <elite-form
@@ -66,7 +69,7 @@ export class Test extends LitElement {
         <input type="range" id='custom1'>
         <input type="date" id='custom2'>
         <div> hello </div>
-        <button @click=${() => this.xcheckandget(this.handleSubmit)} type='submit'>submit</button>
+        <button @click=${() => this.checkandget(this.handleSubmit)} type='submit'>submit</button>
       </div>
 
       
