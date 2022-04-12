@@ -15,12 +15,6 @@ app.post('/signup/checkemail', dbController.checkForEmail, (req, res) => {
   return res.status(200).json(res.locals.email)
 })
 
-// app.post('signup/', dbController.addUser, (req, res) => {
-//   return res.status(200).json({ userid: res.locals.userId });
-// });
-
-
-
 // Unknown route handler
 app.use((req, res) => res.sendStatus(404));
 

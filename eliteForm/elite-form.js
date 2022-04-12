@@ -56,7 +56,7 @@ export class EliteForm extends LitElement {
           id=${this.id} 
           type=${this.type}
           @input=${this.handleInput} 
-          @blur=${this.handleValidation}
+         
           placeholder=${this.placeholder} 
           errorBehavior=${this.errorBehavior}
         }>
@@ -66,6 +66,7 @@ export class EliteForm extends LitElement {
       </div>
     `;
   }
+  // @blur=${this.handleValidation}
 
   handleSubmitTemp(event) { //*****not being used
     const { value } = event.target;
@@ -73,29 +74,37 @@ export class EliteForm extends LitElement {
     // console.log(this.value);
   }
 
-  debounce(func, wait) {
-    let timeout
-    return function(...args) {
-      const context = this
-      clearTimeout(timeout)
-      timeout = setTimeout(() => func.apply(context, args), wait)
-    }
-  }
+  // debounce(func, wait=500) {
+  //   let timeout
+  //   return function(...args) {
+  //     const context = this
+  //     clearTimeout(timeout)
+  //     timeout = setTimeout(() => func.apply(context, args), wait)
+  //   }
+  // }
 
   handleInput(event) {
+    const withDebounce = debounce(() => this.handleValidation(), 1000)
     const { value } = event.target;
     this.value = value
-    if (this.id === 'email') {
-      dbValidation.checkExistingEmail(value, this.url)
-    } 
-    else if (this.id === 'username') {
-      dbValidation.checkExistingUsername(value, this.url)
+    console.log(this.value)
+    if (this.errorBehavior === 'debounce') {
+      return withDebounce()    
     } else {
       this.handleValidation()
     }
-  }
 
-  const withDebounce = this.debounce(() => this.validation())
+    
+
+    // if (this.id === 'email') {
+    //   dbValidation.checkExistingEmail(value, this.url)
+    // } 
+    // else if (this.id === 'username') {
+    //   dbValidation.checkExistingUsername(value, this.url)
+    // } else {
+    //   this.handleValidation()
+    // }
+  }
 
   handleValidation() {
     const error = {}
@@ -107,7 +116,6 @@ export class EliteForm extends LitElement {
     console.log(this.error)
     this.requestUpdate()
   }
-  
 }
 
 window.customElements.define('elite-form', EliteForm)
