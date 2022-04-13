@@ -3,7 +3,7 @@ import {LitElement, html} from 'lit';
 export class EliteWrapper extends LitElement {
 
   static properties = {
-    callback: {},
+    onSubmit: {},
     arr: {},
     error: {},
     buttonName: {},
@@ -21,8 +21,8 @@ export class EliteWrapper extends LitElement {
     return html`
       <div>
         <slot></slot><br><br>
-        <button @click=${() => this.validateForm(this.callback, this.arr)}>${this.buttonName}</button><br><br>
-        <div ?hidden=${this.error}>${this.badFormMessages}</div>
+        <button @click=${() => this.validateForm(this.onSubmit, this.arr)}>${this.buttonName}</button><br><br>
+        <div ?hidden=${this.error}>${this.badFormMessage}</div>
       </div>
     `;
   }
@@ -60,6 +60,7 @@ export class EliteWrapper extends LitElement {
       }
     }
     if (fieldsCheck) {
+      this.error = true
       callback(cache)
     } else {
       this.error = false
