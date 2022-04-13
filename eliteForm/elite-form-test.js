@@ -99,6 +99,10 @@ export class Test extends LitElement {
     .block-cube.block-cube-hover:hover .bg .bg-inner {
       top: 100%;
     }
+
+    .text:hover {
+      color: white;
+    }
   /* styling for the submit button ends*/
 
   `;
@@ -106,7 +110,7 @@ export class Test extends LitElement {
   render() {
     /* overriding stylings starts */
     const styles = {
-      width: '500px',
+      width: '600px',
       padding: '30px',
     }
 
@@ -159,6 +163,7 @@ export class Test extends LitElement {
               } 
             })
           }}
+          .styles=${styles}
           .labelStyles= ${labelStyles}
           .inputStyles= ${inputStyles}
           .errorStyles= ${errorStyles}
