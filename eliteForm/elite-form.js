@@ -6,14 +6,29 @@ import debounce from './debounce'
 export class EliteForm extends LitElement {
   static get styles() {
     return css`
-      .elite-form{
+      :host {
+          /* font-family: 'Roboto Slab', serif; */
+          font-family: monospace;
+      }
+      .elite-form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 10px;
-        font-family: 'Roboto Slab', serif;
-       }`
-  }
+       }
+      label {
+        font-size: 1.3em;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+      }
+      input {
+        font-family: monospace;
+      }
+      ul {
+        list-style-type: "✕ ";
+      }
+     
+  `}
 
   static properties = {
     eliteForm: {},
@@ -53,8 +68,6 @@ export class EliteForm extends LitElement {
     this.noteStyles = ''; 
     this.errorStyles = '';
   }
-
-  // style=${styleMap(this.styles)}
 
   render() {
     const error = []
