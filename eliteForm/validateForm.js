@@ -6,18 +6,20 @@
   subset of the input fields*/
 
 function validateForm(node, callback, arr) {
-  const fields = node.shadowRoot.children.main.children
+  const fields = node.shadowRoot.children.main.children;
   console.log(fields)
-  let fieldsCheck = true
-  const cache = {}
+  let fieldsCheck = true;
+  const cache = {};
 
   for (let singleElement in fields) {
     const currentElement = fields[singleElement]
     if (!isNaN(Number(singleElement))) {
       if (Array.isArray(arr)) {
         if (currentElement.eliteForm && arr.includes(currentElement.id)) {
+          if (!currentElement.value) {
+            currentElement.handleValidation()
+          }
           cache[currentElement.id] = currentElement.value
-          currentElement.handleValidation()
           if (Object.keys(currentElement.error).length > 0) fieldsCheck = false
         }else if (arr.includes(currentElement.id)) {
           const { id, value } = fields[singleElement]

@@ -1,6 +1,7 @@
 import {LitElement, html, css} from 'lit';
-import './elite-form'
-import validateForm from './validateForm'
+import './elite-form';
+import './elite-wrapper';
+import validateForm from './validateForm';
 
 export class Test extends LitElement {
   static styles = css`
@@ -8,7 +9,7 @@ export class Test extends LitElement {
       
     }
   /* styling for the submit button starts*/
-    .btn {
+    /* .btn {
       width: 100%;
       display: block;
       margin: 50px 0px;
@@ -102,7 +103,7 @@ export class Test extends LitElement {
 
     .text:hover {
       color: white;
-    }
+    } */
   /* styling for the submit button ends*/
 
   `;
@@ -139,22 +140,58 @@ export class Test extends LitElement {
     }; 
     /* overriding stylings ends */
 
+    function handleSubmit(arg) {
+      console.log(arg)
+    }
+
     return html`
       <div id='main'>
-        <elite-form 
-          type='text'
-          label='User Name:' 
-          name='username'
-          placeholder='username'
-          id='username'
-          .validationRules= ${{
-            // required: true,
-            alphanumeric: true,
-            between: [2,7],
-            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
+        <elite-wrapper .onSubmit=${handleSubmit}>
+          <elite-form 
+            type='text'
+            label='User Name:' 
+            name='username'
+            class='elite-form'
+            placeholder='username'
+            id='username'
+            .validationRules= ${{
+              // required: true,
+              alphanumeric: true,
+              between: [2,7],
+              checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkusername', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({username: inputValue})
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data === true) {
+                  return true
+                } 
+              })
+            }}
+            .styles=${styles}
+            .labelStyles= ${labelStyles}
+            .inputStyles= ${inputStyles}
+            .errorStyles= ${errorStyles}
+            .noteStyles= ${noteStyles}
+            errorBehavior = 'debounce'
+          ></elite-form>
+          
+          <elite-form
+            type='email'
+            label='Email:'
+            name='email'
+            class='elite-form'
+            placeholder='email'
+            id='email'
+            .validationRules= ${{
+              required: true,
+              email: true,
+              checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkemail', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({username: inputValue})
+              body: JSON.stringify({email: inputValue})
             })
             .then(res => res.json())
             .then(data => {
@@ -162,84 +199,36 @@ export class Test extends LitElement {
                 return true
               } 
             })
-          }}
-          .styles=${styles}
-          .labelStyles= ${labelStyles}
-          .inputStyles= ${inputStyles}
-          .errorStyles= ${errorStyles}
-          .noteStyles= ${noteStyles}
-          errorBehavior = 'debounce'
-        ></elite-form>
-        
-        <elite-form
-          type='email'
-          label='Email:'
-          name='email'
-          placeholder='email'
-          id='email'
-          .validationRules= ${{
-            required: true,
-            email: true,
-            checkExisting: (inputValue) => fetch('http://localhost:3000/signup/checkemail', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({email: inputValue})
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data === true) {
-              return true
-            } 
-          })
-          // endsWith: ['yahoo.com', 'bing.com']
-          }}
-          validationName='yahoo email'
-          note='**note** please enter valid yahoo email'
-          errorBehavior = 'debounce'
-          .styles=${styles}
-          .labelStyles= ${labelStyles}
-          .inputStyles= ${inputStyles}
-          .errorStyles= ${errorStyles}
-          .noteStyles= ${noteStyles}
-        ></elite-form>
-        <!-- <div> howdy </div> -->
-        <!-- <elite-form
-          type='password'
-          label='Password:'
-          name='password'
-          placeholder='password'
-          id='password'
-          .validationRules= ${{
-            required: true,
-            password: true,
-          }}
-          validationName='a strong password'
-        ></elite-form> -->
-        <!-- <div> yessir </div>
-        <input type="range" id='custom1'>
-        <input type="date" id='custom2'>
-        <div> hello </div> -->
-        <!-- <button  @click=${this.submitForm} type='submit'>submit</button> -->
+            // endsWith: ['yahoo.com', 'bing.com']
+            }}
+            note='**note** please enter valid email'
+            errorBehavior = 'debounce'
+            .styles=${styles}
+            .labelStyles= ${labelStyles}
+            .inputStyles= ${inputStyles}
+            .errorStyles= ${errorStyles}
+            .noteStyles= ${noteStyles}
+          ></elite-form>
+          
+          <!-- <button 
+            class='btn block-cube block-cube-hover' 
+            @click=${() => validateForm(this, this.handleSubmit)}
+            type='submit'>
+            <div class='bg-top'>
+              <div class='bg-inner'></div>
+            </div>
+            <div class='bg-right'>
+              <div class='bg-inner'></div>
+            </div>
+            <div class='bg'>
+              <div class='bg-inner'></div>
+            </div>
+            <div class='text'>
+              Submit
+            </div>
+          </button> -->
 
-
-        <button 
-          class='btn block-cube block-cube-hover' 
-          @click=${() => validateForm(this, this.handleSubmit)}
-          type='submit'>
-          <div class='bg-top'>
-            <div class='bg-inner'></div>
-          </div>
-          <div class='bg-right'>
-            <div class='bg-inner'></div>
-          </div>
-          <div class='bg'>
-            <div class='bg-inner'></div>
-          </div>
-          <div class='text'>
-            Submit
-          </div>
-        </button>
-
+        </elite-wrapper>
       </div>
     `;
   }

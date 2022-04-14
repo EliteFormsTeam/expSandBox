@@ -110,6 +110,8 @@ export class EliteForm extends LitElement {
   
   handleBlur() {
     if (this.errorBehavior === 'blur') {
+      const { value } = event.target;
+      this.value = value
       this.handleValidation()
     }
   }
@@ -120,7 +122,9 @@ export class EliteForm extends LitElement {
     if (this.errorBehavior === 'debounce') {
       this.withDebounce()    
     } else {
-      this.handleValidation()
+      if (this.errorBehavior !== 'blur') {
+        this.handleValidation()
+      }
     }
   }
 
