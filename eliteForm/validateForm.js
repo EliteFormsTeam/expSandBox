@@ -7,7 +7,7 @@
 
 function validateForm(node, callback, arr) {
   const fields = node.shadowRoot.children.main.children
-  console.log(fields)
+  // console.log('fields: ', fields)
   let fieldsCheck = true
   const cache = {}
 

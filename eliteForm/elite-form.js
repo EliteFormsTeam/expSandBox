@@ -44,6 +44,8 @@ export class EliteForm extends LitElement {
     errors: {},
     errorBehavior: {}, 
     validationName: {},
+    options: {}, 
+    value: {}
   }
 
   static state = {
@@ -55,6 +57,7 @@ export class EliteForm extends LitElement {
     super();
     this.eliteForm = true;
     this.id = '';
+    this.type='text'
     this.class = '';
     this.type = 'text';
     this.label = '';
@@ -67,6 +70,7 @@ export class EliteForm extends LitElement {
     this.inputStyles = ''; 
     this.noteStyles = ''; 
     this.errorStyles = '';
+    this.value = '';
   }
 
   render() {
@@ -74,40 +78,63 @@ export class EliteForm extends LitElement {
     for (let err in this.error) {
       error.push(html`<li>${this.error[err]}</li>`)
     }
-    // console.log('this.error before render', this.error)
-
-    return html`
-      <div class='elite-form' style=${styleMap(this.styles)}>
-        <label 
-          for=${this.id}
-          style=${styleMap(this.labelStyles)}>
-            ${this.label && this.label}
-        </label>
-        <input 
-          id=${this.id} 
-          type=${this.type}
-          @input=${this.handleInput} 
-          @blur=${this.handleBlur}
-          placeholder=${this.placeholder} 
-          style=${styleMap(this.inputStyles)}
-        >
-        <div 
-          class="note" 
-          ?hidden=${!this.note} 
-          style=${styleMap(this.noteStyles)}>
-            ${this.note}
+    
+    if (this.type === 'radio' || this.type === 'checkbox') {
+      return html `
+      <label>${this.label}</label><br>
+      ${this.options.map((option) => 
+        html `
+          <input 
+            id=${option.optionId}
+            type=${this.type}
+            name=${this.name}
+            value=${option.value}
+            @change=${this.handleInput}
+          />${option.option}<br>
+        `
+      )}
+      `
+    }
+    else {
+      return html`
+        <div class='elite-form' style=${styleMap(this.styles)}>
+          <label 
+            for=${this.id}
+            style=${styleMap(this.labelStyles)}>
+              ${this.label && this.label}
+          </label>
+          <input 
+            id=${this.id} 
+            type=${this.type}
+            @input=${this.handleInput} 
+            @blur=${this.handleBlur}
+            placeholder=${this.placeholder} 
+            style=${styleMap(this.inputStyles)}
+          >
+          <div
+            class="note" 
+            ?hidden=${!this.note} 
+            style=${styleMap(this.noteStyles)}>
+              ${this.note}
+          </div>
+          <ul 
+            class="error" 
+            style=${styleMap(this.errorStyles)}>
+            ${error} 
+          </ul>
         </div>
-        <ul 
-          class="error" 
-          style=${styleMap(this.errorStyles)}>
-          ${error} 
-        </ul>
-      </div>
-    `;
+      `;
+    }
   }
 
   withDebounce = debounce(() => this.handleValidation(), 1000)
   
+  handleEvent() {
+    if (this.errorBehavior === 'blur') {
+      this.handleValidation()
+    }
+  }
+
   handleBlur() {
     if (this.errorBehavior === 'blur') {
       this.handleValidation()
@@ -115,6 +142,7 @@ export class EliteForm extends LitElement {
   }
 
   handleInput(event) {
+    // console.log('event: ', event)
     const { value } = event.target;
     this.value = value
     if (this.errorBehavior === 'debounce') {

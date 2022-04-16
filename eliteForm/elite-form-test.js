@@ -93,6 +93,7 @@ export class Test extends LitElement {
     .block-cube.block-input .bg-right .bg-inner,
     .block-cube.block-input .bg-top .bg-inner {
       transition: all 0.2s ease-in-out;
+      color: white;
     }
    
     .block-cube.block-cube-hover:focus .bg .bg-inner, 
@@ -137,7 +138,28 @@ export class Test extends LitElement {
 
     return html`
       <div id='main'>
-        <elite-form 
+        <elite-form
+          label='choose your favorite dessert'
+          type='radio'
+          name='dessert'
+          id='dessert'
+          .options=${[
+            {option: 'ice cream', value: 'ice cream'}, 
+            {option: 'cake', value: 'cake'}, 
+            {option: 'candy', value: 'candy'}]}
+        ></elite-form>
+        <elite-form
+          label='pick your favorite superhero'
+          type='checkbox'
+          name='superhero'
+          id='superhero'
+          .options=${[
+            {option: 'batman', value: 'batman'}, 
+            {option: 'superman', value: 'superman'}, 
+            {option: 'spiderman', value: 'spiderman'}
+          ]}
+        ></elite-form>
+        <!-- <elite-form 
           type='text'
           label='User Name:' 
           name='username'
@@ -196,27 +218,8 @@ export class Test extends LitElement {
           .inputStyles= ${inputStyles}
           .errorStyles= ${errorStyles}
           .noteStyles= ${noteStyles}
-        ></elite-form>
-        <!-- <div> howdy </div> -->
-        <!-- <elite-form
-          type='password'
-          label='Password:'
-          name='password'
-          placeholder='password'
-          id='password'
-          .validationRules= ${{
-            required: true,
-            password: true,
-          }}
-          validationName='a strong password'
         ></elite-form> -->
-        <!-- <div> yessir </div>
-        <input type="range" id='custom1'>
-        <input type="date" id='custom2'>
-        <div> hello </div> -->
-        <!-- <button  @click=${this.submitForm} type='submit'>submit</button> -->
-
-
+        
         <button 
           class='btn block-cube block-cube-hover' 
           @click=${() => validateForm(this, this.handleSubmit)}
